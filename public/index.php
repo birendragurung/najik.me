@@ -1,4 +1,11 @@
 <?php
+/*
+ * Disable opcache for development stage
+ * Comment out this when deployed for production
+ */
+ini_set('opcache.enable' , false);
+//TODO Remove above code or comment out while deploying in server
+
 
 /**
  * Laravel - A PHP Framework For Web Artisans
@@ -18,7 +25,6 @@
 | loading any of our classes later on. It feels nice to relax.
 |
 */
-
 require __DIR__.'/../bootstrap/autoload.php';
 
 /*

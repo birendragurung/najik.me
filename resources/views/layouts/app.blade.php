@@ -11,18 +11,35 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="/css/app.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
     <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
+    {{--Recaptch scripts--}}
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
+    @stack('header-scripts')
 </head>
 <body>
-    <div id="app">
+    <div id="app" class="fill">
+        {{--Include the header--}}
+        @include('layouts.header')
+
         @yield('content')
+
+        {{--Include the footer--}}
+        @include('layouts.footer')
+
     </div>
 
+
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/moment.js"></script>
+    <script src="/js/jquery.js"></script>
+    <script src="/js/jquery-ui.min.js"></script>
+    <script src="/js/bootstrap-material-datetimepicker.js"></script>
+    <script src="/js/locationpicker.jquery.js"></script>
 
     @stack("footerscripts")
 </body>

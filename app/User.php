@@ -17,7 +17,17 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name' ,
+        'email' ,
+        'password' ,
+        'email',
+        'username' ,
+        'first_name' ,
+        'middle_name' ,
+        'last_name' ,
+        'date_of_birth' ,
+        'verified' ,
+        'verified_at' ,
     ];
 
     /**
@@ -26,14 +36,59 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password' ,
+        'remember_token' ,
     ];
 
-    public function isVerifiedUser()
+    public function getIsAdminAttribute()
     {
-        //TODO
+        $metas = Auth::user()->userMetas;
+        foreach($metas as $meta)
+        {
+            if($meta->role == 'admin' )
+            {
+                return true;
+            }
+        }
+        return false;
 
-        return true;
+    }
+
+    public function getIsVerifiedAttribute()
+    {
+        $user = User::find(Auth::id());
+
+        return ($user->verified == 'yes') ? true : false;
+    }
+
+    public function getUserVerificationPendingAttribute()
+    {
+        $user = User::find(Auth::id());
+
+        return ($user->verified == 'pending') ? true : false;
+    }
+
+    /*
+     * Relationships with other models
+     */
+    public function businesses()
+    {
+        return $this->hasMany(Business::class);
+    }
+
+    public function address()
+    {
+        return $this->morphOne(Address::class,'entity');
+    }
+
+    public function userMetas()
+    {
+        return $this->hasMany(UserMeta::class);
+    }
+
+    public function files()
+    {
+        return $this->morphMany(File::class, 'entity');
     }
 
 }

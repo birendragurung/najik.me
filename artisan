@@ -1,6 +1,14 @@
 #!/usr/bin/env php
 <?php
 
+/*For command line tool
+ * Ref : https://stackoverflow.com/a/34468709/5350097
+ */
+if( isset($argv[1]) && $argv[1] == 'list' &&
+    isset($argv[2]) && $argv[2] == '--xml' ) {
+    $argv[2] = '--format=xml';
+    $_SERVER['argv'] = $argv;
+}
 /*
 |--------------------------------------------------------------------------
 | Register The Auto Loader

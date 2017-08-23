@@ -18,10 +18,10 @@
     <link href="/ark/select2/select2.css" rel="stylesheet" type="text/css" />
     <link href="/ark/select2/select2-bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="/ark/jquery.uniform/themes/default/css/uniform.default.min.css" rel="stylesheet" type="text/css" />
-    {{--<link href="scripts/css/prettify.css" rel="stylesheet" type="text/css" />--}}
+    <link href="/css/ark/prettify.css" rel="stylesheet" type="text/css" />
     <link href="/ark/fullcalendar/dist/fullcalendar.css" rel="stylesheet" />
     <link href="/css/plugins/fullcalendar/fullcalendar.print.css" rel="stylesheet" media="print" />
-    <link href="/js/plugins/dataTables/jquery.dataTables.js" rel="stylesheet" type="text/css" />
+    <link href="/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="/css/ark/ark.css" rel="stylesheet" type="text/css" />
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -35,21 +35,6 @@
 <body class="cover">
 
     <div class="wrapper">
-        <!-- Demo Bar -->
-        <div id="layout_options">
-            <a href="#" class="options-handle"><i class="fa fa-gear"></i></a>
-            <h5>Layout Options</h5>
-            <label>
-                <input type="checkbox" id="fixed_header" />
-                Fixed header
-            </label>
-            <label>
-                <input type="checkbox" id="fixed_container" />
-                Within a container
-            </label>
-        </div>
-        <!-- END: Demo Bar -->
-
         <!-- HEAD NAV -->
         <div class="navbar navbar-default navbar-static-top navbar-main" role="navigation">
             <div class="navbar-header">
@@ -423,7 +408,6 @@
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABa3_QsifCyHhVppeEPPElKetaSh9Wkhs&callback=initMap"></script>
     <script src="/js/plugins/dataTables/jquery.dataTables.js"></script>
     <script src="/js/ark.min.js"></script>
-    {{--<script src="/js/ark.js"></script>--}}
 
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

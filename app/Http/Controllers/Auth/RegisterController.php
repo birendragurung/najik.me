@@ -62,10 +62,45 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        //$confirmation_code = str_random(30);
+        //\Mail::send('email.verify', $confirmation_code, function($message) {
+        //    $message->to(Input::get('email'), Input::get('username'))
+        //        ->subject('Verify your email address');
+        //});
+        //
+        //\Flash::message('Thanks for signing up! Please check your email.');
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            //'confirmation_code' =>$confirmation_code
         ]);
+    }
+
+    /*
+     * REF: http://bensmith.io/email-verification-with-laravel
+     */
+    public function confirm($confirmation_code)
+    {
+        if( ! $confirmation_code)
+        {
+            throw new InvalidConfirmationCodeException;
+        }
+
+        $user = User::whereConfirmationCode($confirmation_code)->first();
+
+        if ( ! $user)
+        {
+            throw new InvalidConfirmationCodeException;
+        }
+
+        $user->confirmed = 1;
+        $user->confirmation_code = null;
+        $user->save();
+
+        Flash::message('You have successfully verified your account.');
+
+        return Redirect::route('login_path');
     }
 }

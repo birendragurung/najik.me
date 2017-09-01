@@ -18,8 +18,11 @@ class Address extends Model
      * Model relationships
      */
 
-    public function business()
+    public function addressable()
     {
-        $this->morphTo();
+        //morphTo relation between Business::class and Address::class.
+        // @parameter $name => field name of the representing class
+        return $this->morphTo('entity');
     }
+
 }

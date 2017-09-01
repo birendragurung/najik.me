@@ -13,7 +13,8 @@
         "laravel/framework": "5.4.*",
         "laravel/socialite": "2.0.x-dev",
         "laravel/tinker": "~1.0",
-        "laravelcollective/html": "^5.4.0"
+        "laravelcollective/html": "^5.4.0",
+        "pragmarx/tracker": "^3.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

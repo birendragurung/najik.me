@@ -15,13 +15,21 @@ class Business extends Model
      */
     protected $guarded = [];
 
-
     public function getProfilePicAttribute()
     {
-        return $this->file->where('meta_name' , '=' , 'business_profile_pic')->first()->file_url;
+        try
+        {
+            return $this->file->where('meta_name' , '=' , 'business_profile_pic')->first()->file_url;
+        } catch(\Exception $e)
+        {
+            //Business has no profile pic set.. so
+            //send default image for business profile pic
+        }
+
+        return url('business/profile.jpg');
     }
-    
-    
+
+
     /*
      * Get the business's owner user
      */
@@ -59,7 +67,7 @@ class Business extends Model
     */
     public function categories()
     {
-        return $this->morphMany(Category::class,'entity');
+        return $this->morphMany(Category::class , 'entity');
     }
 
     /**
@@ -84,5 +92,20 @@ class Business extends Model
     public function file()
     {
         return $this->morphMany(File::class , 'entity');
+    }
+
+    /*
+     * Business category
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    /*
+     *
+     * */
+    public function promotion(){
+        return $this->hasOne(Promotion::class);
     }
 }

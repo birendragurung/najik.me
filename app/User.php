@@ -54,6 +54,20 @@ class User extends Authenticatable
 
     }
 
+    /*
+     * Get all the user roles
+     * */
+    public function getUserRolesAttribute($id = null)
+    {
+        $metas = $id ? User::find($id)->userMetas : Auth::user()->userMetas;
+        $roles = [];
+        foreach($metas as $meta)
+        {
+            $roles[] =  $meta->role;
+        }
+        return $roles;
+    }
+
     public function getIsVerifiedAttribute()
     {
         $user = User::find(Auth::id());

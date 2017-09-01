@@ -18,25 +18,23 @@
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-left">
-                    <li ><a href="#">Discover</a></li>
+                    {{--<li ><a href="{{url('categories')}}">Discover</a></li>--}}
                     @if (Auth::guest())
-                        <li ><a href="#">Pricing</a></li>
+                        {{--<li ><a href="#">Pricing</a></li>--}}
                     @else
                         {{--<li ><a href="#">Publish</a></li>--}}
                     @endif
-                    <li class="menu-item menu-search">
-                            <div class="search-wrapper">
-                                <form class="form-horizontal" role="form" method="POST" action="{{ url('/search') }}">
-                                    {{ csrf_field() }}
-                                    <div class="input-wrapper">
-                                        <input name="q" type="text" placeholder="Search books..." required
-                                               oninvalid="try{this.setCustomValidity('Enter Some Name')}"
-                                               id="search_input" value="{{  $query or '' }}">
-                                    </div>
-                                    <input type="submit" class="button fa fa-search" value="&#xf002;">
-                                </form>
-                            </div>
-                        </li>
+                    {{--<li class="menu-item menu-search">--}}
+                        {{--<div class="search-wrapper">--}}
+                            {{--<form class="form-horizontal" role="form" method="POST" action="{{ url('/search') }}">--}}
+                                {{--{{ csrf_field() }}--}}
+                                {{--<div class="input-wrapper">--}}
+                                    {{--<input name="q" type="text" placeholder="Search books..." required oninvalid="try{this.setCustomValidity('Enter Some Name')}" id="search_input" value="{{  $query or '' }}">--}}
+                                {{--</div>--}}
+                                {{--<input type="submit" class="button fa fa-search" value="&#xf002;">--}}
+                            {{--</form>--}}
+                        {{--</div>--}}
+                    {{--</li>--}}
                 </ul>
 
                 <!-- Right Side Of Navbar -->
@@ -52,6 +50,9 @@
 
                         <li>
                             <a href="/business/add">Add a place</a>
+                        </li>
+                        <li>
+                            <a href="{{url('/categories')}}"><i class="fa fa-list"></i> Categories</a>
                         </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">

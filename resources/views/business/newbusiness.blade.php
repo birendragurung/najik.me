@@ -74,7 +74,9 @@
                         <label for="business-description" class="col-sm-3 control-label align-left">description</label>
 
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="business-description" value="{{old('business_description')}}" name="business_description">
+                            <textarea  class="form-control" id="business-description"  name="business_description">
+                                {{$business['description'] or old('business_description')}}
+                                </textarea>
                         </div>
                     </div>
 
@@ -114,7 +116,7 @@
                         <label for="business-phone-number" class="col-sm-3 control-label align-left">business_email</label>
 
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="business-phone-number" value="{{old('business_email')}}" name="business_email">
+                            <input type="email" class="form-control" id="business-phone-number" value="{{old('business_email')}}" name="business_email">
                         </div>
                     </div>
                     <div class="form-group">
@@ -122,6 +124,27 @@
 
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="business-website" value="{{old('business_website')}}" name="business_website">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label align-left" for="business-category">Business category</label>
+                        <div class=" col-sm-9">
+                            <select class="form-control" id="business-category" name="business_category">
+                                @foreach ($categories as $category)
+                                    @if (count($category->children))
+                                        <option value="{{$category->id }}">{{$category->name }}</option>
+                                        @foreach($category->children as $item )
+                                            <option value="{{$item->id }}"> - {{$item->name }}</option>
+                                        @endforeach
+                                    @elseif($category->parent_id != null )
+                                        @continue
+                                    @else
+                                        <option value="{{$category->id }}">{{$category->name }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
                         </div>
                     </div>
 
@@ -135,7 +158,7 @@
                                 <span class="btn btn-default btn-file">
                                     <span class="fileinput-new">Select image</span>
                                     <span class="fileinput-exists">Change</span>
-                                    <input type="file" name="business_profile_pic">
+                                    <input type="file" name="business_profile_pic" accept="image/*">
                                 </span>
                                 <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
                             </div>
@@ -279,7 +302,7 @@
         </div>
         <div class="row">
             {{--Include my places template here--}}
-            @include('user.section.myplaces' , ['myBusinesses'=> $myBusinesses ])
+            @include('business.section.mybusinesses' , ['myBusinesses'=> $myBusinesses ])
         </div>
     </div>
     @push('footerscripts')
@@ -288,7 +311,7 @@
     @if ($errors->any())
         <script language="javascript">
             var formValidationErrors = {!! json_encode($errors->all())  !!};
-
+            console.log(formValidationErrors);
         </script>
     @endif
     <script language="javascript">
@@ -333,6 +356,6 @@
         }
     </script>
 
-    @include('user.section.mapscripts')
+    @include('business.section.mapscripts')
     @endpush
 @endsection

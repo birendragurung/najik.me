@@ -14,9 +14,13 @@
 use App\Address;
 use App\Business;
 use App\BusinessCategory;
+use App\Category;
+use App\Promotion;
 use App\User;
 use App\UserMeta;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -51,7 +55,10 @@ Route::get('admin_area' , ['middleware' => 'admin' ,function(){
 
 Route::get('/home' , 'HomeController@index')->name('home');
 
-//////////////////////User Routes Group////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+//////////////      User Routes Group        //////////////////
+///////////////////////////////////////////////////////////////
+
 Route::group(['name' => 'user'] , function()
 {
     //TODO add user profile, my businesses list page
@@ -59,63 +66,93 @@ Route::group(['name' => 'user'] , function()
 });
 
 
+///////////////////////////////////////////////////////////////
+//////////  Business Routes Group with No middleware    ///////
+///////////////////////////////////////////////////////////////
 
-
-//////////////////////Business Routes Group////////////////////////////////////////////////////////////////////////
-Route::group(['name' => 'Business Routes'] , function()
+Route::group(['name' => 'Business public routes'] , function()
 {
-    //TODO  business profile page, edit business page ,
+    Route::get('/business/{id}' , 'UserBusinessController@getBusiness')->where('id', '[0-9]+');;
 
-    Route::get('/business/add' , ['middleware' => 'auth' ,
-                                  function(User $user)
-                                  {
-                                      $myBusinesses = Auth::user()->businesses;
 
-                                      return view('business.newbusiness' , ['user'         => User::find(Auth::id()) ,
-                                                                            'myBusinesses' => $myBusinesses ,]);
-                                  }])->name('addplace');
-
-    Route::post('/business/add' , 'UserBusinessController@addNewBusiness');
-
-    Route::get('/business/{id}' , 'UserBusinessController@getBusiness');
-
-    Route::get('/business/edit/{business}' , function(Business $business)
+    Route::get('profile2' , function()
     {
-        $address  = $business->address;
-
-        return view('business.editbusiness', [
-            'business' =>$business,
-            'address' => $address,
-            'myBusinesses' => Business::where('id' , '=' , Auth::id())->get() ,
-        ]);
+        return view('business.profile2');
     });
 });
 
 
-////////File resources Route Group////////////////////////////////////////////////////////////////////////////
-Route::group(['name' => 'File Routes'] , function()
+///////////////////////////////////////////////////////////////
+/////   Business Routes Group with Auth middleware  ///////////
+///////////////////////////////////////////////////////////////
+
+Route::group(['name' => 'Business Private Routes' , 'middleware' => 'auth'] , function()
 {
-    //Route::resource()
+    //TODO  business profile page, edit business page ,
+
+    Route::get('/business/add' ,'UserBusinessController@addBusinessForm');
+
+    Route::post('/business/add' , 'UserBusinessController@addNewBusiness');
+
+    Route::get('/business/edit/{business}' , 'UserBusinessController@getEditBusinessForm')->where('business', '[0-9]+');
+
+    Route::post('/business/edit/{business}' , 'UserBusinessController@updateBusiness')->where('business', '[0-9]+');
 });
 
 
+///////////////////////////////////////////////////////////////
+//////////       Administrator Route Group      ///////////////
+///////////////////////////////////////////////////////////////
+//uses App\Http\Middleware\IsAdmin middleware
 
-
-////////Administrator Route Group////////////////////////////////////////////////////////////////////////////
 Route::group(['name' => 'Admin Dashboard', 'middleware' => 'admin' ] , function()
 {
     Route::get('/admin/dashboard' , 'AdminDashboardController@dashboardHome');
+
+    Route::get('promote/{business}' ,  "AdminDashboardController@promoteBusiness");
+
+});
+
+
+///////////////////////////////////////////////////////////////
+//////////       Search Route Group      ///////////////
+///////////////////////////////////////////////////////////////
+
+Route::group(['name' => 'Search'] , function()
+{
+    Route::get('search' , 'SearchController@getSearchPage');
+
+    Route::post('/search' , 'SearchController@getSearchResult');
+
+    Route::get('/categories/{category}/{category_name?}', 'SearchController@getCategorySearch');
+
+    Route::get('/categories' , function()
+    {
+        $cats = Category::all();
+        return view('search.categories' , ['categories' =>$cats ]);
+    });
+});
+
+
+///////////////////////////////////////////////////////////////
+///////////     File resources Route Group   //////////////////
+///////////////////////////////////////////////////////////////
+
+Route::group(['name' => 'File Routes'] , function()
+{
+    Route::get('/business/uploads/{url?}', 'ImageController@getBusinessUploads');
+
+    Route::get('business/profilepic/{url}' , 'ImageController@getBusinessProfilePic');
+
+    Route::get('/business/profile.jpg' , 'ImageController@getDefaultBusinessProfilePic');
+
 });
 
 
 
-
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////Test Routes////////////////////////////////////////////////////////////////
+////////////////////////              Test      Routes         ////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 /*
  * Testing Eloquent relations for our models
  *
@@ -210,11 +247,37 @@ Route::group(['name' => 'eloquent_relations' ,'middleware' => 'auth'] , function
 
     Route::get('/addressable', function()
     {
-        $add = Address::find(102);
+        $add = Address::find(152);
         //dump($add->addressable);
-        dump($add->addressable() );
-    });
+        $b  = $add->addressable;
+        dump($b);
+    });//works.. gives the model instance of the owning model ie business, user, etc
+
+    Route::get('/subcategories' , function()
+    {
+        $categories = Category::find(1);
+        $sub = $categories->children;
+        dump($categories);
+        dump($sub);
+    });//workd
+
+    //Route::get('/categories' , function()
+    //{
+    //    $cats = Category::where('parent_id' , '=' , null)->get();
+    //    //dump($cats);
+    //    foreach($cats as $cat)
+    //    {
+    //        $child = $cat->children;
+    //        dump($child);
+    //        foreach($child as $item)
+    //        {
+    //            //dump($item->parent);
+    //        }
+    //    }
+    //});//workd .. returns collection of child categories of each parent category
+
 });
+
 
 /*
  * Test routes
@@ -248,3 +311,104 @@ Route::get('dashboard', function()
 {
     return view("dashboard.home");
 });
+Route::get('result' , function()
+{
+    return view("search.results");
+
+});
+
+Route::get('landing',  function()
+{
+    return view("landing");
+
+});
+
+Route::get('gallery',  function()
+{
+    return view("gallery");
+
+});
+
+Route::get('component',  function()
+{
+    return view("component");
+
+});
+Route::get('assignpp' , function()
+{
+    $businesses = Business::all();
+    $replica = $businesses[46];
+    foreach($businesses as $business)
+    {
+
+        if(count($business->file) ==0)
+        {
+            //$avatar    = $request->file('business_profile_pic');
+            //$extension = $avatar->getClientOriginalExtension();
+            ////Naming convention: unix timestamp + file extension
+            //$filename      = uniqid(time() , true);
+            //$absolute_path = storage_path() . '/app/public/uploads/business/' . $filename . '.' . $extension;
+            //Storage::makeDirectory('/public/uploads/business');
+            //Image::make($avatar)->save($absolute_path);
+            $business->file()->create([
+                'filename'      => $replica->file->first()->filename  ,
+                'file_extension' => $replica->file->first()->file_extension ,
+                'meta_name'     => 'business_profile_pic' ,
+                'absolute_path' => $replica->file->first()->absolute_path  ,
+                'file_title'    => $replica->file->first()->file_title ,
+                'description'   => 'Business profile picture' ,
+                'file_url'      => '/business/uploads/' . $replica->file->first()->filename  . '.'. $replica->file->first()->extension ,
+                'mime_type'     => $replica->file->first()->mime_type ,
+                'parent_dir_path'=>  storage_path() . '/app/public/uploads/business/',
+
+            ])    ;
+
+            dump($business->file);
+        }
+    }
+});
+
+Route::get('assignadd' , function()
+{
+    $businesses = Business::all();
+    $replica = $businesses[46];
+    foreach($businesses as $business)
+    {
+
+        if(count($business->address) ==0)
+        {
+            //$avatar    = $request->file('business_profile_pic');
+            //$extension = $avatar->getClientOriginalExtension();
+            ////Naming convention: unix timestamp + file extension
+            //$filename      = uniqid(time() , true);
+            //$absolute_path = storage_path() . '/app/public/uploads/business/' . $filename . '.' . $extension;
+            //Storage::makeDirectory('/public/uploads/business');
+            //Image::make($avatar)->save($absolute_path);
+            $business->address()->create([
+                'street_address'      => $replica->address->first()->street_address  ,
+                'town' => $replica->address->first()->town ,
+                'state'     => $replica->address->first()->state ,
+                'country' => $replica->address->first()->country  ,
+                'zip_code'    => $replica->address->first()->zip_code ,
+                'latitude'   => $replica->address->first()->latitude ,
+                'longitude'      =>$replica->address->first()->longitude ,
+
+            ])    ;
+
+        }
+    }
+});
+
+
+Route::get('dfpromote/{business}' , ['middleware' => 'admin' ,function(Business $business)
+{
+    $promotions                    = $business->promotion ? : new Promotion();
+    $promotions->business_id       = $business->id;
+    $promotions->admin_id          = Auth::id();
+    $promotions->promoted_at       = Carbon::now();
+    $promotions->expires_at        = Carbon::now()->addHours(10 * 24);
+    $promotions->promotion_period  = '11 days';
+    $promotions->promotion_pricing = Promotion::pricing(10 * 24);
+    $promotions->save();
+    dump('success');
+}]);

@@ -2,8 +2,11 @@
 
 namespace App;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Business extends Model
 {
@@ -14,6 +17,34 @@ class Business extends Model
      * @var array
      */
     protected $guarded = [];
+
+    public function getIsVerifiedAttribute()
+    {
+
+        return ($this->verified == 'yes') ? true : false;
+    }
+
+    public function getVerificationPendingAttribute()
+    {
+        return ($this->verified == 'pending') ? true : false;
+    }
+
+    public function getCategoryNameAttribute()
+    {
+        return $this->category->name;
+    }
+
+    public function getOpenFromTimeAttribute()
+    {
+
+        return Carbon::createFromFormat('H:i:s' , $this->attributes['open_from'])->format('H:s A');
+        //return Carbon::createFromFormat('h:i:s' , $this['open_from'])->format('h:i A');
+    }
+
+    public function getOpenUptoTimeAttribute()
+    {
+        return Carbon::createFromFormat('H:i:s' , $this->attributes['open_from'])->format('H:s A');
+    }
 
     public function getProfilePicAttribute()
     {
@@ -27,6 +58,17 @@ class Business extends Model
         }
 
         return url('business/profile.jpg');
+    }
+
+    /*
+     * Global rating
+     * */
+    public function getGlobalRatingAttribute()
+    {
+        $globalRating = 0;
+        $globalRating = Rating::where('meta_name' , 'global_rating')->where('business_id' , $this->id)->first();
+
+        return $globalRating->rating;
     }
 
 
@@ -73,9 +115,9 @@ class Business extends Model
     /**
      * Get all of the Business's ratings.
      */
-    public function rating()
+    public function ratings()
     {
-        return $this->morphMany(Rating::class , 'entity');
+        return $this->hasMany(Rating::class);
     }
 
     /**
@@ -105,7 +147,8 @@ class Business extends Model
     /*
      *
      * */
-    public function promotion(){
+    public function promotion()
+    {
         return $this->hasOne(Promotion::class);
     }
 }

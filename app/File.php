@@ -15,6 +15,6 @@ class File extends Model
 
     public function fileable()
     {
-        $this->morphTo();
+        $this->morphTo('entity');
     }
 }

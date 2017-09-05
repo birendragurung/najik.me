@@ -3,7 +3,7 @@ use App\Category;
 
 $categories = Category::all();
 ?>
-<!DOCTYPE html>
+        <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
@@ -22,7 +22,12 @@ $categories = Category::all();
     <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="/fonts/glyphicons-halflings-regular.woff2" />
     <link rel="stylesheet" id="listify-fonts-css" href="//fonts.googleapis.com/css?family=Karla%3Aregular%2Citalic%2C700&amp;ver=4.7.5#038;subset=latin" type="text/css" media="all">
+
     @stack('header-scripts')
+    <link href="/css/star-rating.css" media="all" rel="stylesheet" type="text/css"/>
+    <!-- optionally if you need to use a theme, then include the theme file as mentioned below -->
+    <link href="/themes/krajee-svg/theme.css" media="all" rel="stylesheet" type="text/css" />
+
 </head>
 <body>
     <div id="app" class="fill">
@@ -30,9 +35,9 @@ $categories = Category::all();
         @include('layouts.header')
 
 
-        <div class="container">
-            @include('search.section.form' , ['hideform' => isset($hidesearchform)?true:false]){{--hidden parameter to determine whether to show search form or not--}}
-        </div>
+        {{--<div class="container">--}}
+        {{--@include('search.section.form' , ['hideform' => isset($hidesearchform)?true:false])--}}{{--hidden parameter to determine whether to show search form or not--}}
+        {{--</div>--}}
 
 
         <div class="flash-alert-container">
@@ -68,29 +73,44 @@ $categories = Category::all();
     <script src="/js/jquery-ui.min.js"></script>
     <script src="/js/bootstrap-material-datetimepicker.js"></script>
     <script src="/js/locationpicker.jquery.js"></script>
+    <script src="/js/star-rating.js" type="text/javascript"></script>
+    <script src="/js/jquery.form-validator.min.js" type="text/javascript"></script>
+
+    <!-- optionally if you need to use a theme, then include the theme file as mentioned below -->
+    <script src="/themes/krajee-svg/theme.js"></script>
+
     <script>
+        function scroll_to(div){
+            $('html, body').animate({
+                scrollTop: $(div).offset().top
+            },1000);
+        }
+
         $(document).ready(function () {
-            function toggleAlert(){
+            function toggleAlert() {
                 $(".alert").toggleClass('in out');
                 return false; // Keep close.bs.alert event from removing from DOM
             }
 
-                    {{--        @if(session()->has('flashMessage'))--}}
-            var messageBox = $("<div class='container alert alert-info fade in' id='flash-alert'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a></div>");
-            $('#flash-alert-container').append(messageBox);
-            var flashMsg = {{ session('flashMessage') or 'laskj' }};
-            var element = '<strong>Info:</strong>'.flashMsg;
-            var alertBox = $('#flash-alert');
+            {{--        @if(session()->has('flashMessage'))--}}
+            {{--var messageBox = $("<div class='container alert alert-info fade in' id='flash-alert'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a></div>");--}}
+            {{--$('#flash-alert-container').append(messageBox);--}}
+            {{--var flashMsg = {{ session('flashMessage') or 'laskj' }};--}}
+            {{--var element  = '<strong>Info:</strong>'.flashMsg;--}}
+            {{--var alertBox = $('#flash-alert');--}}
 
-            alertBox.append(element);
-            alertBox.removeClass('hidden');
-            $("#btn").on("click", toggleAlert);
-            alertBox.on('close.bs.alert', toggleAlert);
+            {{--alertBox.append(element);--}}
+            {{--alertBox.removeClass('hidden');--}}
+            {{--$("#btn").on("click", toggleAlert);--}}
+            {{--alertBox.on('close.bs.alert', toggleAlert);--}}
             {{--@endif--}}
         })
 
 
     </script>
     @stack("footerscripts")
+
+
+
 </body>
 </html>

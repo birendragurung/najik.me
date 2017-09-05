@@ -133,6 +133,8 @@ $categories = Category::all();
 @push('footerscripts')
         <!-- Easy Responsive Tabs -->
 <script src="js/easyResponsiveTabs.js"></script>
-
+<script>
+$('#fh5co-tab-feature-vertical').easyResponsiveTabs();
+</script>
 @endpush
 @endsection

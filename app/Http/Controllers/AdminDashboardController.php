@@ -20,7 +20,6 @@ class AdminDashboardController extends Controller
     public function dashboardHome()
     {
         $allUsers  = User::paginate(30);
-        dd($allUsers);
         $admins = UserMeta::where('role' , '=' , 'admin')->get();
         $moderators   = UserMeta::where('role' , '=' , 'moderator')->get();
         $newUserCount = User::where('created_at' , '>' , Carbon::today()->startOfDay());

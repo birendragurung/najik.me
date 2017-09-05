@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2090f7572210f839ca0927f2642bd4cd",
+    "content-hash": "c77d9a939b3ff3c65f73325fb87036e9",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -679,6 +679,55 @@
                 "parser"
             ],
             "time": "2014-09-09T13:34:57+00:00"
+        },
+        {
+            "name": "eloquent/lcs",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/eloquent/php-lcs.git",
+                "reference": "9381d6e57b7fadef4e9a90ce1b1e2b04e05a2d06"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/eloquent/php-lcs/zipball/9381d6e57b7fadef4e9a90ce1b1e2b04e05a2d06",
+                "reference": "9381d6e57b7fadef4e9a90ce1b1e2b04e05a2d06",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "icecave/archer": "~1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Eloquent\\Lcs\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Erin Millard",
+                    "email": "ezzatron@gmail.com",
+                    "homepage": "http://ezzatron.com/"
+                }
+            ],
+            "description": "An implementation of the 'longest common subsequence' algorithm for PHP.",
+            "homepage": "https://github.com/eloquent/php-lcs",
+            "keywords": [
+                "Algorithm",
+                "common",
+                "diff",
+                "longest",
+                "sequence",
+                "subsequence"
+            ],
+            "time": "2014-02-17T06:24:14+00:00"
         },
         {
             "name": "erusev/parsedown",

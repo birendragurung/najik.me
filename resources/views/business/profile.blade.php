@@ -18,7 +18,9 @@
         <!-- Intro Content -->
         <div class="row">
             <div class="col-lg-6">
-                <img class="img-fluid rounded mb-4" src="{{url($business->profilePic )}}" alt="">
+                <div class="profile-image-wrapper">
+                    <img class="img-fluid rounded mb-4" src="{{url($business->profilePic )}}" alt="">
+                </div>
             </div>
             <div class="col-lg-6">
                 <h2>About: '{{$business->name}}'</h2>
@@ -29,7 +31,7 @@
 
                 <p><a href="{{$business->website }}">{{$business->website }}</a></p>
                 @if(Auth::user() && (Auth::id() == $business->user->id ))
-                    <a id="add-business-button" type="submit" value="Edit this business" class="btn btn-default">Edit this business</a>
+                    <a href="/business/edit/{{$business->id}}" id="add-business-button" type="submit" value="Edit my business" class="btn btn-default">Edit my business</a>
                 @endif
             </div>
         </div>
@@ -129,5 +131,109 @@
 
     @push('footerscripts')
     @include('business.section.mapscripts' , ['address' =>$business->address  , 'markerDraggableDisable' => 'markerDraggable: false,    draggable: true,'  ])
+    @endpush
+    @push('footerscripts')
+    <script>
+        jQuery(document).ready(function () {
+                $("#input-{{$business->id }}").rating({
+                starCaptions: function (val) {
+                    if (val < 3) {
+                        return val;
+                    } else {
+                        return 'high';
+                    }
+                },
+                starCaptionClasses: function (val) {
+                    if (val < 3) {
+                        return 'label label-danger';
+                    } else {
+                        return 'label label-success';
+                    }
+                },
+                hoverOnClear: false
+                /* starCaptions: {
+                 0.5: '0.5',
+                 1: '1',
+                 1.5: '1.5',
+                 2: '2',
+                 2.5: '2.5',
+                 3: '3',
+                 3.5: '3.5',
+                 4: '4',
+                 4.5: '4.5',
+                 5: '5'
+                 }*/
+            });
+            $("#input-{{$business->id }}").click(function () {
+                alert('clicked');
+                $.post("{{url('/business/rate/'.$business->id)}}",
+                        {
+                            'rating': $("#rating-{{$business->id}}}").val()
+                        },
+                        function (data, status) {
+                            alert("Data: " + data + "\nStatus: " + status);
+                        }
+                );
+            });
+            $('#input-{{$business->id}}').on('rating.change', function(event, value, caption) {
+                $.ajax({
+                    type: "GET",
+                    url: '{{url('business/rate/'.$business->id )}}',
+                    data: {rate: $('#input-{{$business->id}}').val()},
+                    success: function(){
+                        alert('successfully rated')
+                    },
+//                dataType: 'json'
+                });
+            });
+        $("#input-21f").rating({
+                starCaptions: function (val) {
+                    if (val < 3) {
+                        return val;
+                    } else {
+                        return 'high';
+                    }
+                },
+                starCaptionClasses: function (val) {
+                    if (val < 3) {
+                        return 'label label-danger';
+                    } else {
+                        return 'label label-success';
+                    }
+                },
+                hoverOnClear: false
+            });
+            var $inp = $('#rating-input');
+
+            $inp.rating({
+                min: 0,
+                max: 5,
+                step: 1,
+                size: 'lg',
+                showClear: false
+            });
+
+            $('#btn-rating-input').on('click', function () {
+                $inp.rating('refresh', {
+                    showClear: true,
+                    disabled: !$inp.attr('disabled')
+                });
+            });
+
+
+            $('.btn-danger').on('click', function () {
+                $("#kartik").rating('destroy');
+            });
+
+            $('.btn-success').on('click', function () {
+                $("#kartik").rating('create');
+            });
+
+            $inp.on('rating.change', function () {
+                alert($('#rating-input').val());
+            });
+        });
+    </script>
+
     @endpush
 @endsection

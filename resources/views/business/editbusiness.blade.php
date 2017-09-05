@@ -24,8 +24,13 @@
                         <label for="business-name" class="col-sm-3 control-label align-left">Business name</label>
 
                         <div class="col-sm-9">
-                            <input type="text" value="{{$business['name'] or old('business_name')}}" name="business_name" id="business-name" class="form-control">
+                            <input type="text" value="{{ old('business_name',$business['name'])}}" name="business_name" id="business-name" class="form-control">
                         </div>
+                        @if ($errors->has('business_name'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('business_name') }}</strong>
+                            </span>
+                        @endif
                     </div>
                     {{--<i class="fa fa-plus"></i> Select file--}}
 
@@ -34,47 +39,76 @@
                         <label for="address-street" class="col-sm-3 control-label align-left">Street name</label>
 
                         <div class="col-sm-9">
-                            <input type="text" value="{{$address['address'] or old('business_street_address')}}" class="form-control" id="address-street" name="business_street_address">
+                            <input type="text" value="{{ old('business_street_address',$address['street_address'] )}}" class="form-control" id="address-street" name="business_street_address">
                         </div>
-                    </div>
+                        @if ($errors->has('business_street_address'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('business_street_address') }}</strong>
+                            </span>
+                        @endif                    </div>
 
                     <div class="form-group">
                         <label for="address-zipcode" class="col-sm-3 control-label align-left">zipcode</label>
 
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="address-zipcode" value="{{$address['zip_code'] or old('business_zip_code')}}" name="business_zip_code">
+                            <input type="text" class="form-control" id="address-zipcode" value="{{ old('business_zip_code',$address['zip_code'] )}}" name="business_zip_code">
                         </div>
+                        @if ($errors->has('business_zip_code'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('business_zip_code') }}</strong>
+                            </span>
+                        @endif
                     </div>
 
                     <div class="form-group">
                         <label for="business-town" class="col-sm-3 control-label align-left">Town</label>
 
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="business-town" value="{{$address['town'] or old('business_town')}}" name="business_town">
+                            <input type="text" class="form-control" id="business-town" value="{{ old('business_town',$address['town'] )}}" name="business_town">
                         </div>
+                        @if ($errors->has('business_town'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('business_town') }}</strong>
+                            </span>
+                        @endif
                     </div>
                     <div class="form-group">
                         <label for="business-state" class="col-sm-3 control-label align-left">state</label>
 
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="business-state" value="{{$address['state'] or old('business_state')}}" name="business_state">
+                            <input type="text" class="form-control" id="business-state" value="{{ old('business_state',$address['state'] )}}" name="business_state">
                         </div>
+                        @if ($errors->has('business_state'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('business_state') }}</strong>
+                            </span>
+                        @endif
                     </div>
 
                     <div class="form-group">
                         <label for="business-country" class="col-sm-3 control-label align-left">country</label>
 
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="business-country" value="{{$address['country'] or old('business_country')}}" name="business_country">
+                            <input type="text" class="form-control" id="business-country" value="{{ old('business_country',$address['country'] )}}" name="business_country">
                         </div>
+                        @if ($errors->has('business_country'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('business_country') }}</strong>
+                            </span>
+                        @endif
                     </div>
 
                     <div class="form-group">
                         <label for="business-description" class="col-sm-3 control-label align-left">description</label>
 
                         <div class="col-sm-9">
-                            <textarea type="text" class="form-control" id="business-description" name="business_description">{{$business['description'] or old('business_description')}}</textarea>
+                            <textarea type="text" class="form-control" id="business-description" name="business_description">{{ old('business_description',$business['description'] )}}</textarea>
                         </div>
+                        @if ($errors->has('business_description'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('business_description') }}</strong>
+                            </span>
+                        @endif
                     </div>
 
 
@@ -85,44 +119,75 @@
 
 
                         <div class="col-sm-4">
-                            <label for="business-open-from" class="col-sm-3 control-label align-left">open_from</label>
-                            <input type="text" class="form-control " id="business-open-from" value="{{$business['open_from'] or old('business_open_from')}}" name="business_open_from">
+                            <label for="business-open-from" class="col-sm-3 control-label align-left">Open from</label>
+                            <input type="text" class="form-control " id="business-open-from" value="{{ old('business_open_from',$business['openFromTime'] )}}" name="business_open_from">
+                            @if ($errors->has('business_open_from'))
+                                <span class="help-block">
+                                <strong>{{ $errors->first('business_open_from') }}</strong>
+                            </span>
+                            @endif
                         </div>
 
                         <div class="col-sm-4">
-                            <label for="business-open-upto" class="col-sm-3 col-sm-offset-4 control-label">open_upto</label>
-                            <input type="text" id="business-open-upto" value="{{$business['open_upto'] or old('business_open_upto')}}" name="business_open_upto" class="form-control col-sm-offset-3">
+                            <label for="business-open-upto" class="col-sm-3 col-sm-offset-4 control-label">Open upto</label>
+                            <input type="text" id="business-open-upto" value="{{ old('business_open_upto',$business['openUptoTime'] )}}" name="business_open_upto" class="form-control col-sm-offset-3">
+                            @if ($errors->has('business_open_upto'))
+                                <span class="help-block">
+                                <strong>{{ $errors->first('business_open_upto') }}</strong>
+                            </span>
+                            @endif
                         </div>
+
                     </div>
 
                     <div class="form-group">
                         <label for="business-phone-number" class="col-sm-3 control-label align-left">phone_number</label>
 
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="business-phone-number" value="{{$business['phone_number'] or old('business_phone_number')}}" name="business_phone_number">
+                            <input type="text" class="form-control" id="business-phone-number" value="{{ old('business_phone_number',$business['phone_number'] )}}" name="business_phone_number">
                         </div>
+                        @if ($errors->has('business_phone_number'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('business_phone_number') }}</strong>
+                            </span>
+                        @endif
                     </div>
 
                     <div class="form-group">
                         <label for="business-mobile-number" class="col-sm-3 control-label align-left">mobile_number</label>
 
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="business-mobile-number" value="{{$business['mobile_number'] or old('business_mobile_number')}}" name="business_mobile_number">
+                            <input type="text" class="form-control" id="business-mobile-number" value="{{ old('business_mobile_number',$business['mobile_number'] )}}" name="business_mobile_number">
                         </div>
+                        @if ($errors->has('business_mobile_number'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('business_mobile_number') }}</strong>
+                            </span>
+                        @endif
                     </div>
                     <div class="form-group">
                         <label for="business-phone-number" class="col-sm-3 control-label align-left">business_email</label>
 
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="business-phone-number" value="{{$business['email'] or old('business_email')}}" name="business_email">
+                            <input type="text" class="form-control" id="business-phone-number" value="{{ old('business_email',$business['email'] )}}" name="business_email">
                         </div>
+                        @if ($errors->has('business_email'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('business_email') }}</strong>
+                            </span>
+                        @endif
                     </div>
                     <div class="form-group">
                         <label for="business-website" class="col-sm-3 control-label align-left">website</label>
 
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" id="business-website" value="{{$business['website'] or old('business_website')}}" name="business_website">
+                            <input type="text" class="form-control" id="business-website" value="{{ old('business_website',$business['website'] )}}" name="business_website">
                         </div>
+                        @if ($errors->has('business_website'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('business_website') }}</strong>
+                            </span>
+                        @endif
                     </div>
 
                     <div class="form-group">
@@ -161,6 +226,11 @@
                                 <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
                             </div>
                         </div>
+                        @if ($errors->has('business_profile_pic'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('business_profile_pic') }}</strong>
+                            </span>
+                        @endif
                     </div>
                 </div>
 
@@ -203,10 +273,7 @@
                 </div>
             </form>
         </div>
-        <div class="row">
-            {{--Include my places template here--}}
-            @include('business.section.mybusinesses' , ['myBusinesses'=> $myBusinesses ])
-        </div>
+
     </div>
     @push('footerscripts')
     <script src="/ark/jasny-bootstrap/js/fileinput.js"></script>

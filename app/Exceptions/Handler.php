@@ -4,7 +4,9 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Str;
 
 class Handler extends ExceptionHandler
 {
@@ -44,6 +46,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if($exception instanceof ModelNotFoundException)
+        {
+            return response()->view('errors.404', ['message'=>'The' .str_replace('App\\', " ", $exception->getModel()) .' you are looking for does not exist' ], 500);
+        }
         return parent::render($request, $exception);
     }
 

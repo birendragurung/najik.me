@@ -16,6 +16,7 @@ use App\Business;
 use App\BusinessCategory;
 use App\Category;
 use App\Promotion;
+use App\Rating;
 use App\User;
 use App\UserMeta;
 use Carbon\Carbon;
@@ -32,37 +33,74 @@ Route::get('register/verify/{confirmationCode}', [
     'uses' => 'RegisterController@confirm'
 ]);
 
-Route::get('/' , "HomeController@index");
-
-Route::get('/home' , "HomeController@home");
-
-Route::get("/logout" , function()
+Route::group(['name'=>'home routes', "middleware" =>'auth' ], function()
 {
-    if(Auth::user())
+
+    Route::get('/' , "HomeController@index");
+
+    Route::get("/logout" , function()
     {
-        Auth::logout();
-    }
+        if(Auth::user())
+        {
+            Auth::logout();
+        }
 
-    return redirect('/login');
+        return redirect('/login');
+    });
+
+    Route::get('/home' , 'HomeController@index')->name('home');
+
 });
-
-Route::get('/home' , 'HomeController@index')->name('home');
-
-
-Route::get('admin_area' , ['middleware' => 'admin' ,function(){
-                               //
-}]);
-
-Route::get('/home' , 'HomeController@index')->name('home');
 
 ///////////////////////////////////////////////////////////////
 //////////////      User Routes Group        //////////////////
 ///////////////////////////////////////////////////////////////
 
-Route::group(['name' => 'user'] , function()
+Route::group(['name' => 'user','middleware' =>'auth'] , function()
 {
     //TODO add user profile, my businesses list page
+    Route::get('/user/profile' , 'UserController@profile');
 
+    Route::post('/user/editprofile' , 'UserController@editProfile');
+
+    Route::get('/business/rate/{business}' , function(Business $business)
+    {
+        if($business->user_id == Auth::id() )
+        {
+            //return res
+        }
+        $rate = (int)Request::get('rate');
+        $validator = Validator::make(['rate' => $rate] , [
+            'rate' => 'int|min:0|max:5'
+        ]);
+        if($validator->fails())
+        {
+            return response($validator->errors()->all(), 406);
+        }
+        //dd($business->rating->where('user_id', Auth::id()) );
+        /*$rating = $business->rating ? $business->rating->where('user_id', Auth::id())->first() : $business->rating->create([
+
+            'user_id' => Auth::id() ,
+            'rating'  => $rate ,
+
+        ]);*/
+
+        $rating = Rating::where('user_id' , Auth::id())->where('business_id' , $business->id)->first()?:new Rating([
+            'user_id' => Auth::id() ,
+            'rating'  => $rate ,
+            'business_id' => $business->id ,
+            'meta_name' =>'user_rating'
+        ]) ;
+        $rating->rating = $rate;
+        $rating->save();
+        return response('Rated:' . $rate);
+    });
+
+    Route::get('/business/rate/delete/{business}' , function(Business $business)
+    {
+        $rate =  $business->ratings()->where('meta_name','user_rating')->where('user_id',Auth::id())/*->get()*/ ;
+        return ($rate->first() and $rate->first()->delete()) ?"Successfully deleted rating":'No rating found';
+    });
 });
 
 
@@ -72,8 +110,7 @@ Route::group(['name' => 'user'] , function()
 
 Route::group(['name' => 'Business public routes'] , function()
 {
-    Route::get('/business/{id}' , 'UserBusinessController@getBusiness')->where('id', '[0-9]+');;
-
+    Route::get('/business/{id}' , 'UserBusinessController@getBusiness')->where('id', '[0-9]+');
 
     Route::get('profile2' , function()
     {
@@ -88,7 +125,17 @@ Route::group(['name' => 'Business public routes'] , function()
 
 Route::group(['name' => 'Business Private Routes' , 'middleware' => 'auth'] , function()
 {
-    //TODO  business profile page, edit business page ,
+
+    Route::get('mybusinesses' , function()
+    {
+        $myBusinesses = Auth::user()->businesses;
+        return view('business.mybusinesses',[
+
+            'myBusinesses'=>$myBusinesses
+        ]);
+    });
+
+    Route::delete('/business/{business}' , "UserBusinessController@deleteBusiness");
 
     Route::get('/business/add' ,'UserBusinessController@addBusinessForm');
 
@@ -122,20 +169,32 @@ Route::group(['name' => 'Search'] , function()
 {
     Route::get('search' , 'SearchController@getSearchPage');
 
-    Route::post('/search' , 'SearchController@getSearchResult');
+    Route::get('/search/map','SearchController@mapSearch');
+
+    Route::get('/search/map/{latitude}/{longitude}/{distance?}' , 'SearchController@getMapSearch');
+
+    Route::get('/search/{key}/{category?}' , 'SearchController@getSearchResult');
 
     Route::get('/categories/{category}/{category_name?}', 'SearchController@getCategorySearch');
 
     Route::get('/categories' , function()
     {
         $cats = Category::all();
-        return view('search.categories' , ['categories' =>$cats ]);
+        $topRatedBusinesses = (new Rating())->topRatedBusinesses ;
+
+        return view('search.categories' , [
+            'categories' =>$cats,
+            'popularBusinesses' => $topRatedBusinesses
+        ]);
+
     });
+
+
 });
 
 
 ///////////////////////////////////////////////////////////////
-///////////     File resources Route Group   //////////////////
+///////////     Image resources Route Group   //////////////////
 ///////////////////////////////////////////////////////////////
 
 Route::group(['name' => 'File Routes'] , function()
@@ -412,3 +471,15 @@ Route::get('dfpromote/{business}' , ['middleware' => 'admin' ,function(Business 
     $promotions->save();
     dump('success');
 }]);
+
+
+Route::get('globalrating' , function()
+{
+    $businesses = Business::take(5)->get() ;
+
+    foreach($businesses as $business)
+    {
+        $business->globalRating ;
+    }
+    dump($businesses);
+});

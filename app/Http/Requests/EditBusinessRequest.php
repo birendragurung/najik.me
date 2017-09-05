@@ -14,20 +14,14 @@ class EditBusinessRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize(User $user, Business $business)
+    public function authorize()
     {
         if(Auth::user())
         {
-            if($user->isVerified && $business->user == Auth::user()  )
-            {
                 return true;
-            } else
-            {
-                return redirect('/home')->withErrors(['message' => 'Cannot edit this property']);
-            }
         }
 
-        return redirect("/login")->with('require_login' , 'Please login to add new business');
+        return redirect("/login")->with('message' , 'Please login to add new business');
     }
 
     /**
@@ -37,14 +31,14 @@ class EditBusinessRequest extends FormRequest
      */
     public function rules()
     {
-        return ['business_name'           => 'required|string|max:200|min:8|regex:/^[a-z A-Z]+$/u' ,
+        return ['business_name'           => 'required|string|max:200|min:8' ,
                 'business_street_address' => 'required|string|max:100' ,
                 'business_zip_code'       => ['required' ,
                                               'integer' ,
                                               'digits_between:3,8',
                 ] ,
-                'business_town'           => 'required|string|max:100|regex:/^[a-z A-Z]+$/u' ,
-                'business_state'          => 'required|string|max:100|regex:/^[a-z A-Z]+$/u' ,
+                'business_town'           => 'required|string|max:100' ,
+                'business_state'          => 'required|string|max:100' ,
                 'business_description'    => 'required|string' ,
                 'business_open_from'      => ['required' , 'regex:/(2[0-4]|[01][1-9]|10):([0-5][0-9])/'] ,
                 'business_open_upto'      => ['required' , 'regex:/(2[0-4]|[01][1-9]|10):([0-5][0-9])/'] ,
@@ -59,6 +53,5 @@ class EditBusinessRequest extends FormRequest
                 'business_profile_pic'    => 'image|mimes:jpeg,jpg,png'
 
         ];
-
     }
 }

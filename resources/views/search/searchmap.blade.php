@@ -16,11 +16,9 @@ use Illuminate\Support\Str;
 <link href="/css/style-112.css" rel="stylesheet">
 
 @endpush
-
 <div class="row">
     <div id="map-box" class="col-md-12">
         <div id="search-map">
-
         </div>
         <div>
             <fieldset>
@@ -38,38 +36,15 @@ use Illuminate\Support\Str;
     <div class="row">
 
     </div>
-
-
 </div>
 
 <div class="container">
-
-    <!-- Page Heading/Breadcrumbs -->
-    <h1 class="mt-4 mb-3">{{ old('search_key') != null ?'Search results for : ' . old('search_key'):""}}
-        <small>Search results ( {{$metaSearchData['count']<=1?$metaSearchData['count'] . ' item found':$metaSearchData['count'] . ' items found'}} )</small>
-    </h1>
-
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-            <a href="/home">Home</a>
-        </li>
-        <li class="breadcrumb-item active">Search</li>
-    </ol>
     <div class="row">
-        @if(!isset($promotedBusinesses))
         <div class="col-md-9 col-lg-9 mb-4">
             @include("business.section.businesscard" , ['businesses' =>$businesses ])
         </div>
-        @else
-            <div class="col-md-9 col-lg-9 mb-4">
 
-                <h2>Featured businesses</h2>
-
-                @include('business.section.businesscard',['businesses'=> $promotedBusinesses])
-
-            </div>
-        @endif
-        <div class="col-sm-12 col-md-12 col-lg-3">
+        <div class="col-md-3 col-lg-3  col-sm-12 col-xs-12">
             @include('search.section.search-sidebar')
             @include("search.section.categoriestab")
         </div>
@@ -181,8 +156,24 @@ use Illuminate\Support\Str;
 
 
     });
+
 </script>
 @include('search.section.mapscripts')
-@include('business.section.rate-scripts')
+<script>
+    $(document).ready(function () {
+        $('.business-wrapper form i.glyphicon.glyphicon-minus-sign').each(function (i) {
+            $(this).click(function () {
+                $.ajax({
+                    url: 'http://najikme.dev/business/rate/delete/' + $(this).parents('.business-wrapper').attr('business-id'),
+                    method: 'get',
+                    success: function () {
+                        alert('deleted rate');
+                    }
+                });
+            })
+        });
+    });
+</script>
+
 @endpush
 @endsection

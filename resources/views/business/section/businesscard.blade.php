@@ -19,7 +19,7 @@ use Illuminate\Support\Str;
                                 <h4 class="card-title">{{$business->name }}</h4>
                                 <h6><a href="/categories/{{$business->category->id}}">{{$business->categoryName }}</a></h6>
                                 <p class="card-text">{{Str::limit($business->description, 100) }}</p>
-                                <p class="card-text">Open from {{$business->openFrom}} to {{$business->openUptoTime}}</p>
+                                <p class="card-text">Open from {{$business->openFromTime}} to {{$business->openUptoTime}}</p>
                             </div>
                         </a>
 

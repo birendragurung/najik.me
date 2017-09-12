@@ -27,7 +27,7 @@
             center: LatLng,
             zoom: 16
         });
-        infoWindow = new google.maps.InfoWindow;
+        infoWindow = new google.maps.InfoWindow();
 
         //Custom styles.
         //REF : http://logicify.github.io/jquery-locationpicker-plugin/

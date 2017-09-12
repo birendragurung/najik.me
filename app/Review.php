@@ -6,11 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Review extends Model
 {
+    protected $guarded = [];
+
     /**
      * Get all of the owning commentable models.
      */
-    public function reviewable()
+    public function business()
     {
-        return $this->morphTo();
+        return $this->belongsTo(Business::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

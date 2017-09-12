@@ -14,8 +14,8 @@
                                 <p>{{$message}}</p>
                             @else
                             <p>The page you are looking for does not exist.</p>
+                                <p>You may have mistyped the address or the page may have moved.</p>
                             @endif
-                            <p>You may have mistyped the address or the page may have moved.</p>
                             <p>
                                 <a href="javascript: history.back()">Go back to the previous page</a> /
                                 <a href="/">Go to the Home page</a>

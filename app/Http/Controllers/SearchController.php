@@ -30,12 +30,11 @@ class SearchController extends Controller
             'recents'            => $business->orderBy('created_at' , 'desc')->limit(10)->get()
 
         ]);
-
     }
 
     public function getSearchResult(Request $request)
     {
-        $query          = [$request->get('search_key'),$request->get('category')] ;
+        $query          = ['search_key'=> $request->get('search_key'),'search_category' => $request->get('category')] ;
         $businesses     = null;
         $metaSearchData = [];
         if(isset($query['search_category']) && $query['search_category'] == 0)
@@ -49,6 +48,10 @@ class SearchController extends Controller
         } else
         {
             $businesses              = Business::where('name' , 'like' , '%' . $query['search_key'] . '%')->orWhere('description' , 'like' , '%' . $query['search_key'] . '%')->where('category_id' , $query['search_category'])->get();
+            foreach($businesses as $business)
+            {
+                $this->getBusinessRatings($business);
+            }
             $metaSearchData['count'] = $businesses->count();
 
         }
@@ -169,7 +172,7 @@ class SearchController extends Controller
         {
             if($address->addressable)
             {
-                $address->addressable->distance = $address->distance;
+                $address->addressable->distance = $address->distance < 1 ? $address->distance*1000 .' meters from here': number_format($address->distance,2) . " km from here";
                 $nearbyBusinesses[] = $address->addressable;
             }
         }
@@ -180,7 +183,7 @@ class SearchController extends Controller
         return $nearbyBusinesses;
     }
 
-    protected function getBusinessRatings(Business &$business)
+    public function getBusinessRatings(Business &$business)
     {
         //Only authenticated user will have myRating property and they don't have myRating property for their own business
         if(Auth::user() && Auth::id() != $business->user->id )
@@ -213,7 +216,7 @@ class SearchController extends Controller
         return $business;
     }
 
-    protected function topRatedBusinesses()
+    public function topRatedBusinesses()
     {
         $topRatings = Rating::select(DB::raw('* , avg(rating) as avgrate'))->where( 'meta_name' , "user_rating")->groupBy('business_id')->orderBy('avgrate', 'desc')->limit(10)->get();
         //dd($topRatings);
@@ -251,5 +254,54 @@ class SearchController extends Controller
             $promotedBusinesses[] = $promotion->business;
         }
         return $promotedBusinesses;
+    }
+
+
+    public function longestCommonSubsequence(array $sequenceA, array $sequenceB)
+    {
+        $m = count($sequenceA);
+        $n = count($sequenceB);
+
+        // $a[$i][$j] = length of LCS of $sequenceA[$i..$m] and $sequenceB[$j..$n]
+        $a = array();
+
+        // compute length of LCS and all subproblems via dynamic programming
+        for ($i = 0 ; $i < $m ; $i++) {
+            for ($j = 0; $j <$n; $j++) {
+                if ($sequenceA[$i]== $sequenceB[$j]) {
+                    $a[$i][$j] =
+                        (isset($a[$i - 1][$j - 1]) ? $a[$i - 1][$j - 1] : 0) +
+                        1;
+                } else {
+                    $a[$i][$j] = max(
+                        (isset($a[$i - 1][$j]) ? $a[$i - 1][$j] : 0),
+                        (isset($a[$i][$j - 1]) ? $a[$i][$j - 1] : 0)
+                    );
+                }
+            }
+        }
+
+        // recover LCS itself
+        $i = $m - 1;
+        $j = $m - 1;
+        $lcs = array();
+
+        while ($i >= 0 && $j >=0) {
+            if ($sequenceA[$i]== $sequenceB[$j]) {
+                $lcs[] = $sequenceA[$i];
+
+                $i--;
+                $j--;
+            } elseif (
+                (isset($a[$i - 1][$j]) ? $a[$i - 1][$j] : 0) >=
+                (isset($a[$i][$j - 1]) ? $a[$i][$j - 1] : 0)
+            ) {
+                $i--;
+            } else {
+                $j--;
+            }
+        }
+
+        return array_reverse($lcs);
     }
 }

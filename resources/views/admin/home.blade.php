@@ -1,160 +1,170 @@
 @extends('layouts.dashboard')
 
 @section('content')
-
+    <?php dump($allUsers[5]->address)  ?>
     <section class="content">
-
         <ol class="breadcrumb">
-            <li class="active"><i class="fa fa-home fa-fw"></i> Home</li>
+            <li><a href="index.html"><i class="fa fa-home fa-fw"></i> Home</a></li>
+            <li class="active">Users Tables</li>
         </ol>
 
         <div class="header">
             <div class="col-md-12">
-                <h3 class="header-title">Dashboard</h3>
-                <p class="header-info">Overview and latest statistics</p>
+                <h3 class="header-title">Users Tables</h3>
+                <p class="header-info"></p>
             </div>
         </div>
 
         <!-- CONTENT -->
         <div class="main-content">
-
             <div class="row">
-                <div class="col-md-6">
-                    <div class="panel ">
-                        <div class="panel-heading">
-                            <div class="panel-actions">
-                                <div id="reportrange" class="pull-right">
-                                    <i class="fa fa-calendar"></i>
-                                    <span>This month</span> <b class="caret"></b>
-                                </div>
-                            </div>
-                            <h3 class="panel-title">Conversions</h3>
-                        </div>
-                        <div class="panel-body">
-                            <div id="dashboardConversions" class="chart"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="panel">
-                        <div class="panel-body">
-                            <ul class="col-md-12 stats">
-                                <li class="stat col-md-3 col-sm-3 col-xs-6">
-                                    <span><b class="value">{{$user['newUserCount']}}</b> New Users</span>
-                                    <em>Today</em>
-                                </li>
-                                <li class="stat col-md-3 col-sm-3 col-xs-6">
-                                    <span><b class="value">5,402</b> New Visits</span>
-                                    <em>Today</em>
-                                </li>
-                                <li class="stat col-md-3 col-sm-3 col-xs-6">
-                                    <span><b class="value">741</b> Orders</span>
-                                    <em>This week</em>
-                                </li>
-                                <li class="stat col-md-3 col-sm-3 col-xs-6">
-                                    <span><b class="value">$23,441</b> Revenue</span>
-                                    <em>This month</em>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="panel ">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Overview</h3>
-                        </div>
-                        <div class="panel-body">
-                            <div class="col-md-4 col-sm-4 col-xs-6 text-center pie-box">
-                                <div class="pie-chart" data-percent="73"><span>0%</span></div>
-                                <a href="#" class="pie-title">Likes</a>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-xs-6 text-center pie-box">
-                                <div class="pie-chart" data-percent="34" data-bar-color="#1F8A70"><span>0%</span></div>
-                                <a href="#" class="pie-title">Tweets</a>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-xs-6 text-center pie-box">
-                                <div class="pie-chart" data-percent="57" data-bar-color="#FF530D"><span>0%</span></div>
-                                <a href="#" class="pie-title">Server Load</a>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-md-12">
+                    <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-hover datatable">
+                        <thead>
+                        <tr>
+                            <th>User id</th>
+                            <th>User name</th>
+                            <th>Email</th>
+                            <th>Created at</th>
+                            <th>Verified</th>
+                            <th>Address</th>
+                            <th>Total businesses</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($allUsers as $user)
+                        <tr class="odd gradeX">
+                            <td>{{$user->id }}</td>
+                            <td>{{$user->name}}</td>
+                            <td>{{$user->email }}</td>
+                            <td class="center"> {{$user->created_at }}</td>
+                            <td class="center">{{$user->verified}}</td>
+                            <td class="center">{{isset($user->address->country)?$user->address->country:"" }}</td>
+                            <td class="center">{{count($user->businesses)?:0 }}</td>
+                        </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+
+
+                    <!--<table class="table table-striped table-hover">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                    <!--<th>Order Id</th>-->
+                    <!--<th>Date</th>-->
+                    <!--<th>User</th>-->
+                    <!--<th>Status</th>-->
+                    <!--<th>Amount</th>-->
+                    <!--<th></th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr>-->
+                    <!--<td><a href="#">#4531</a></td>-->
+                    <!--<td>Jun 14, 2013</td>-->
+                    <!--<td><a href="#">Sylvia Stingray</a></td>-->
+                    <!--<td>-->
+                    <!--<span class="label label-success">Delivered</span>-->
+                    <!--</td>-->
+                    <!--<td>$2,643.00</td>-->
+                    <!--<td>-->
+                    <!--<a href="#">Edit</a>-->
+                    <!--<a href="#">Delete</a>-->
+                    <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                    <!--<td><a href="#">#4532</a></td>-->
+                    <!--<td>Feb 8, 2013</td>-->
+                    <!--<td><a href="#">Jennifer Garner</a></td>-->
+                    <!--<td>-->
+                    <!--<span class="label label-primary">Completed</span>-->
+                    <!--</td>-->
+                    <!--<td>$1,392.00</td>-->
+                    <!--<td>-->
+                    <!--<a href="#">Edit</a>-->
+                    <!--<a href="#">Delete</a>-->
+                    <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                    <!--<td><a href="#">#4533</a></td>-->
+                    <!--<td>Dec 21, 2013</td>-->
+                    <!--<td><a href="#">Wilma Penaflor</a></td>-->
+                    <!--<td>-->
+                    <!--<span class="label label-warning">Pending</span>-->
+                    <!--</td>-->
+                    <!--<td>$2,990.00</td>-->
+                    <!--<td>-->
+                    <!--<a href="#">Edit</a>-->
+                    <!--<a href="#">Delete</a>-->
+                    <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                    <!--<td><a href="#">#4534</a></td>-->
+                    <!--<td>Ian 12, 2013</td>-->
+                    <!--<td><a href="#">Richard Leigh</a></td>-->
+                    <!--<td>-->
+                    <!--<span class="label label-default">Canceled</span>-->
+                    <!--</td>-->
+                    <!--<td>$3,847.00</td>-->
+                    <!--<td>-->
+                    <!--<a href="#">Edit</a>-->
+                    <!--<a href="#">Delete</a>-->
+                    <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                    <!--<td><a href="#">#4535</a></td>-->
+                    <!--<td>Ian 17, 2013</td>-->
+                    <!--<td><a href="#">Cori Bradley</a></td>-->
+                    <!--<td>-->
+                    <!--<span class="label label-success">Delivered</span>-->
+                    <!--</td>-->
+                    <!--<td>$1,744.00</td>-->
+                    <!--<td>-->
+                    <!--<a href="#">Edit</a>-->
+                    <!--<a href="#">Delete</a>-->
+                    <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                    <!--<td><a href="#">#4536</a></td>-->
+                    <!--<td>Aug 2, 2013</td>-->
+                    <!--<td><a href="#">Roy Brookins</a></td>-->
+                    <!--<td>-->
+                    <!--<span class="label label-warning">Pending</span>-->
+                    <!--</td>-->
+                    <!--<td>$5,123.00</td>-->
+                    <!--<td>-->
+                    <!--<a href="#">Edit</a>-->
+                    <!--<a href="#">Delete</a>-->
+                    <!--</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                    <!--<td><a href="#">#4537</a></td>-->
+                    <!--<td>Sep 27, 2013</td>-->
+                    <!--<td><a href="#">Brenda McConnell</a></td>-->
+                    <!--<td>-->
+                    <!--<span class="label label-primary">Completed</span>-->
+                    <!--</td>-->
+                    <!--<td>$4,233.00</td>-->
+                    <!--<td>-->
+                    <!--<a href="#">Edit</a>-->
+                    <!--<a href="#">Delete</a>-->
+                    <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                    <!--</table>-->
+                    <!--<ul class="pagination pagination-sm">-->
+                    <!--<li class="disabled"><a href="#">&laquo;</a></li>-->
+                    <!--<li class="active"><a href="#">1</a></li>-->
+                    <!--<li><a href="#">2</a></li>-->
+                    <!--<li><a href="#">3</a></li>-->
+                    <!--<li><a href="#">4</a></li>-->
+                    <!--<li><a href="#">5</a></li>-->
+                    <!--<li><a href="#">&raquo;</a></li>-->
+                    <!--</ul>-->
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="panel">
-                        <div class="panel-heading">
-                            <div class="panel-actions">
-                                <a href="#" class="panel-action" ><i class="fa fa-gear"></i></a>
-                                <a href="#" class="panel-action" ><i class="fa fa-filter"></i></a>
-                                <a href="#" class="panel-action" ><i class="fa fa-eye"></i></a>
-                            </div>
-                            <h3 class="panel-title">Latest Orders</h3>
-                        </div>
-                        <div class="panel-body">
-                            <table class="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th class="col-md-4">ID</th>
-                                    <th class="col-md-4">User</th>
-                                    <th class="col-md-4">Value</th>
-                                    <th class="col-md-4">Status</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>#1249</td>
-                                    <td>Joe Walker</td>
-                                    <td>$653</td>
-                                    <td><span class="label label-info">PENDING</span></td>
-                                </tr>
-                                <tr>
-                                    <td>#1248</td>
-                                    <td>Zoe Hart</td>
-                                    <td>$1,342</td>
-                                    <td><span class="label label-default">INACTIVE</span></td>
-                                </tr>
-                                <tr>
-                                    <td>#1247</td>
-                                    <td>Zoe Hart</td>
-                                    <td>$1,012</td>
-                                    <td><span class="label label-primary">ACTIVE</span></td>
-                                </tr>
-                                <tr>
-                                    <td>#1246</td>
-                                    <td>Tim Butcher</td>
-                                    <td>$2,500</td>
-                                    <td><span class="label label-warning">PROCESSING</span></td>
-                                </tr>
-                                <tr>
-                                    <td>#1245</td>
-                                    <td>Mark Smith</td>
-                                    <td>$45</td>
-                                    <td><span class="label label-success">COMPLETED</span></td>
-                                </tr>
-                                <tr>
-                                    <td>#1244</td>
-                                    <td>Dave Gibbs</td>
-                                    <td>$948</td>
-                                    <td><span class="label label-danger">CANCELED</span></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="panel ">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Revenue</h3>
-                        </div>
-                        <div class="panel-body">
-                            <div id="dashboardRevenues" class="chart"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
         <!-- END: CONTENT -->
     </section>
+
 @endsection

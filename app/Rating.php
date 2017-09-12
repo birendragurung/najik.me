@@ -23,7 +23,14 @@ class Rating extends Model
             if($topRating->business)
             {
                 $topRating->business->avgRating =number_format($topRating->avgrate,1);
+                $topRating->business->rateCounts =
+                    Rating::select(DB::raw('* , avg(rating) as avgrate'))
+                        ->where( 'meta_name' , "user_rating")
+                        ->where('business_id' ,$topRating->business->id)
+                        ->groupBy('business_id')
+                        ->count();
                 $topRatedBusinesses[] = $topRating->business;
+
             }
             else{
                 $topRating->delete();

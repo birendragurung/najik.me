@@ -36,10 +36,10 @@ use Illuminate\Support\Str;
 </div>
 <div class="col-md-12 map-container mb-5">
     <div class="row">
+        <div id="map-distance-range"></div>
+
 
     </div>
-
-
 </div>
 
 <div class="container">
@@ -70,119 +70,19 @@ use Illuminate\Support\Str;
             </div>
         @endif
         <div class="col-sm-12 col-md-12 col-lg-3">
-            @include('search.section.search-sidebar')
+            @include('search.section.livesearch')
             @include("search.section.categoriestab")
         </div>
 
     </div>
 </div>
 @push('footerscripts')
-<script>
-    jQuery(document).ready(function () {
-        @foreach($businesses as $business)
-            $("#input-{{$business->id }}").rating({
-            starCaptions: function (val) {
-                if (val < 3) {
-                    return val;
-                } else {
-                    return 'high';
-                }
-            },
-            starCaptionClasses: function (val) {
-                if (val < 3) {
-                    return 'label label-danger';
-                } else {
-                    return 'label label-success';
-                }
-            },
-            hoverOnClear: false
-            /* starCaptions: {
-             0.5: '0.5',
-             1: '1',
-             1.5: '1.5',
-             2: '2',
-             2.5: '2.5',
-             3: '3',
-             3.5: '3.5',
-             4: '4',
-             4.5: '4.5',
-             5: '5'
-             }*/
-        });
-        $("#input-{{$business->id }}").click(function () {
-            alert('clicked');
-            $.post("{{url('/business/rate/'.$business->id)}}",
-                    {
-                        'rating': $("#rating-{{$business->id}}}").val()
-                    },
-                    function (data, status) {
-                        alert("Data: " + data + "\nStatus: " + status);
-                    }
-            );
-        });
-        $('#input-{{$business->id}}').on('rating.change', function (event, value, caption) {
-            $.ajax({
-                type: "GET",
-                url: '{{url('business/rate/'.$business->id )}}',
-                data: {rate: $('#input-{{$business->id}}').val()},
-                success: function () {
-                    alert('You have rated ' + $('#input-{{$business->id}}').val() + ' stars to ' + '{{$business->name}}');
-                },
-//                dataType: 'json'
-            });
-        });
-        @endforeach
-    $("#input-21f").rating({
-            starCaptions: function (val) {
-                if (val < 3) {
-                    return val;
-                } else {
-                    return 'high';
-                }
-            },
-            starCaptionClasses: function (val) {
-                if (val < 3) {
-                    return 'label label-danger';
-                } else {
-                    return 'label label-success';
-                }
-            },
-            hoverOnClear: false
-        });
-        var $inp = $('#rating-input');
 
-        $inp.rating({
-            min: 0,
-            max: 5,
-            step: 1,
-            size: 'lg',
-            showClear: false
-        });
-
-        $('#btn-rating-input').on('click', function () {
-            $inp.rating('refresh', {
-                showClear: true,
-                disabled: !$inp.attr('disabled')
-            });
-        });
-
-
-        $('.btn-danger').on('click', function () {
-            $("#kartik").rating('destroy');
-        });
-
-        $('.btn-success').on('click', function () {
-            $("#kartik").rating('create');
-        });
-
-        $inp.on('rating.change', function () {
-            alert($('#rating-input').val());
-        });
-
-
-    });
-</script>
 @include('search.section.mapscripts')
 @include('business.section.rate-scripts')
+<script src="/js/plugins/rickshaw/rickshaw.min.js"></script>
+<script>
+    $( "#map-distance-range" ).slider();
+</script>
 @endpush
 @endsection

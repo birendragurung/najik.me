@@ -7,8 +7,8 @@ use App\Promotion;
 use App\User;
 use App\UserMeta;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 
 class AdminDashboardController extends Controller
 {
@@ -19,15 +19,19 @@ class AdminDashboardController extends Controller
 
     public function dashboardHome()
     {
-        $allUsers  = User::paginate(30);
+        $allUsers  = User::all();
         $admins = UserMeta::where('role' , '=' , 'admin')->get();
         $moderators   = UserMeta::where('role' , '=' , 'moderator')->get();
         $newUserCount = User::where('created_at' , '>' , Carbon::today()->startOfDay());
 
-        return view('admin.home' , ['allUsers' => $allUsers ,
-                                    'admins' => $admins ,
-                                    'moderators'  => $moderators,
-                                    'newUserCount'  => $newUserCount
+        return view('admin.home' , [
+
+            'allUsers'     => $allUsers ,
+            'user'         => Auth::user() ,
+            'admins'       => $admins ,
+            'moderators'   => $moderators ,
+            'newUserCount' => $newUserCount
+
         ]);
     }
 
@@ -51,6 +55,11 @@ class AdminDashboardController extends Controller
         $promotions->promotion_period  = '11 days';
         $promotions->promotion_pricing = Promotion::pricing(10 * 24);
         $promotions->save();
-        return view('admin.home')->with(['message' => 'Business successfully promoted' ,]);
+        return Request::ajax() ?
+            response()->json(
+                [
+                    'message'    => 'Business promoted successfully'
+                ]
+            ): view('admin.home')->with(['message' => 'Business successfully promoted' ,]);
     }
 }

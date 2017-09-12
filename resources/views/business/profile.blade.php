@@ -19,7 +19,7 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="profile-image-wrapper">
-                    <img class="img-fluid rounded mb-4" src="{{url($business->profilePic )}}" alt="">
+                    <img class="img-fluid rounded mb-4" src="{{$business->profilePic }}" alt="">
                 </div>
             </div>
             <div class="col-lg-6">

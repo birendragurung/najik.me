@@ -35,10 +35,10 @@ use Illuminate\Support\Str;
 </div>
 <div class="col-md-12 map-container mb-5">
     <div class="row">
+        <div id="map-distance-range"></div>
+
 
     </div>
-
-
 </div>
 
 <div class="container">
@@ -70,7 +70,7 @@ use Illuminate\Support\Str;
             @endif
         </div>
         <div class="col-md-3 col-lg-3  col-sm-12 col-xs-12">
-            @include('search.section.search-sidebar')
+            @include('search.section.livesearch')
             @include('search.section.categoriestab')
         </div>
     </div>
@@ -79,6 +79,10 @@ use Illuminate\Support\Str;
 @include('search.section.mapscripts')
 
 @include('business.section.rate-scripts')
+<script src="/js/plugins/rickshaw/rickshaw.min.js"></script>
+<script>
+    $( "#map-distance-range" ).slider();
+</script>
 @endpush
 
 @endsection

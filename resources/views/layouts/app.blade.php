@@ -19,6 +19,7 @@ $categories = Category::all();
     <link href="/css/app.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
     <link href="/css/animate.css" rel="stylesheet">
+    <link href="/css/jquery-ui.min.css" rel="stylesheet">
     <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="/fonts/glyphicons-halflings-regular.woff2" />
     <link rel="stylesheet" id="listify-fonts-css" href="//fonts.googleapis.com/css?family=Karla%3Aregular%2Citalic%2C700&amp;ver=4.7.5#038;subset=latin" type="text/css" media="all">
@@ -70,7 +71,7 @@ $categories = Category::all();
     <script src="/js/app.js"></script>
     <script src="/js/moment.js"></script>
     <script src="/js/jquery.js"></script>
-    <script src="/js/jquery-ui.min.js"></script>
+    <script src="/js/jquery-ui.js"></script>
     <script src="/js/bootstrap-material-datetimepicker.js"></script>
     <script src="/js/locationpicker.jquery.js"></script>
     <script src="/js/star-rating.js" type="text/javascript"></script>

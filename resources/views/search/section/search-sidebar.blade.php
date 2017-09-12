@@ -7,7 +7,7 @@ $categories = isset($categories)?$categories: Category::all();
         <!-- Sidebar Column -->
 <div class="col-xs-12 col-md-12 col-lg-12 mb-4">
     <div class="list-group">
-        <form class="filter-detail-page" action="/search" autocomplete="on" method="get">
+        <form class="filter-detail-page" action="/search/results" autocomplete="on" method="get">
 
             <input type="text" class="form-control col-md-4 list-group-item mb-3 mt-3" placeholder="Keyword"  value="{{old('search_key')}}" name="search_key" required="true">
             <select class="form-control list-group-item mb-3 mt-3" name="search_category" required="true">

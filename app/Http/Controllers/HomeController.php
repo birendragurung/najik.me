@@ -24,10 +24,11 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $promotedBusinesses = (new SearchController())->getPromotedBusinesses();
         if(Auth::guest())
         {
-            return view('guest');
+            return view('search.searchmap',['promotedBusinesses'=>$promotedBusinesses ]);
         }
-        return view('home');
+        return view('search.searchmap',['promotedBusinesses'=>$promotedBusinesses ]);
     }
 }

@@ -29,12 +29,9 @@ class UserBusinessController extends Controller
             //$profilePicFilename = $businessProfilePic->filename . $businessProfilePic->file_extension;
             $address = $business->address;
 
-            return view('business.profile' , [
+            return view('business.profile2' , [
 
-                'business'           => $business ,
-                'businessProfilePic' => $businessProfilePic ,
-                'address'            => $address
-
+                'business'           => $business
             ]);
         } catch(\Exception $e)
         {
@@ -74,9 +71,6 @@ class UserBusinessController extends Controller
             try
             {
                 $address             = $business->address;
-                $business->open_from = Carbon::createFromFormat('H:i:s' , $business->open_from)->format('H:i');
-                $business->open_upto = Carbon::createFromFormat('H:i:s' , $business->open_upto)->format('H:i');
-
                 return view('business.editbusiness' , [
 
                     'business'              => $business ,

@@ -37,13 +37,13 @@ class Business extends Model
     public function getOpenFromTimeAttribute()
     {
 
-        return Carbon::createFromFormat('H:i:s' , $this->attributes['open_from'])->format('H:s A');
-        //return Carbon::createFromFormat('h:i:s' , $this['open_from'])->format('h:i A');
+        return Carbon::createFromFormat('H:i:s' , $this->open_from)->format('H:i');
     }
 
     public function getOpenUptoTimeAttribute()
     {
-        return Carbon::createFromFormat('H:i:s' , $this->attributes['open_from'])->format('H:s A');
+        return Carbon::createFromFormat('H:i:s' , $this->open_upto)->format('H:i');
+
     }
 
     public function getProfilePicAttribute()
@@ -71,6 +71,10 @@ class Business extends Model
         return $globalRating->rating;
     }
 
+    public function getCurrentUserHasReviewAttribute()
+    {
+        return Review::where('business_id', $this->id)->where('user_id', Auth::id())->first()?true:false;
+    }
 
     /*
      * Get the business's owner user
@@ -104,13 +108,13 @@ class Business extends Model
         return $this->hasMany(Product::class);
     }
 
-    /*
-    * Get the business's categories
-    */
-    public function categories()
-    {
-        return $this->morphMany(Category::class , 'entity');
-    }
+    ///*
+    //* Get the business's categories
+    //*/
+    //public function categories()
+    //{
+    //    return $this->belongsTo(Category::class );
+    //}
 
     /**
      * Get all of the Business's ratings.
@@ -123,9 +127,9 @@ class Business extends Model
     /**
      * Get all of the Business's reviews.
      */
-    public function review()
+    public function reviews()
     {
-        return $this->morphMany(Review::class , 'entity');
+        return $this->hasMany(Review::class);
     }
 
     /*

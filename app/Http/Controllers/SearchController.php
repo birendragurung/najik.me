@@ -189,8 +189,16 @@ class SearchController extends Controller
         if(Auth::user() && Auth::id() != $business->user->id )
         {
             //dd(Rating::select(DB::raw('* , avg(rating) as avgrate'))->where('meta_name' , "user_rating")->where('business_id' , $business->id)->first()->avgrate );
-            $business->myRating = Rating::where('user_id' , Auth::id())->where('meta_name' , 'user_rating')->where('business_id' , $business->id)->first()? Rating::where('user_id' , Auth::id())->where('meta_name' , 'user_rating')->where('business_id' , $business->id)->first()->rating:0  ;
-
+            $business->myRating = Rating::where('user_id' , Auth::id())
+                ->where('meta_name' , 'user_rating')
+                ->where('business_id' , $business->id)
+                ->first()?
+                Rating::where('user_id' , Auth::id())
+                    ->where('meta_name' , 'user_rating')
+                    ->where('business_id' , $business->id)
+                    ->first()
+                    ->rating
+                :0;
         }
         $business->rateCounts =
             Rating::select(DB::raw('* , avg(rating) as avgrate'))

@@ -1,10 +1,9 @@
 @extends('layouts.dashboard')
 
 @section('content')
-    <?php dump($allUsers[5]->address)  ?>
     <section class="content">
         <ol class="breadcrumb">
-            <li><a href="index.html"><i class="fa fa-home fa-fw"></i> Home</a></li>
+            <li><a href="/admin/dashboard"><i class="fa fa-home fa-fw"></i> Home</a></li>
             <li class="active">Users Tables</li>
         </ol>
 
@@ -25,23 +24,48 @@
                             <th>User id</th>
                             <th>User name</th>
                             <th>Email</th>
+                            <th>Address</th>
                             <th>Created at</th>
                             <th>Verified</th>
-                            <th>Address</th>
                             <th>Total businesses</th>
+                            <th></th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($allUsers as $user)
-                        <tr class="odd gradeX">
-                            <td>{{$user->id }}</td>
-                            <td>{{$user->name}}</td>
-                            <td>{{$user->email }}</td>
-                            <td class="center"> {{$user->created_at }}</td>
-                            <td class="center">{{$user->verified}}</td>
-                            <td class="center">{{isset($user->address->country)?$user->address->country:"" }}</td>
-                            <td class="center">{{count($user->businesses)?:0 }}</td>
-                        </tr>
+                            <tr class="odd gradeX user-detail-row" data-user-id= {{$user->id}}>
+                                <td>{{$user->id }}</td>
+                                <td>{{$user->name}}</td>
+                                <td>{{$user->email }}</td>
+                                <td class="center">{{isset($user->address)? $user->address->street_address . ' ' .$user->address->town  . ' ' . $user->address->state  . ', ' . $user->address->country:"" }}</td>
+                                <td class="center"> {{$user->created_at }}</td>
+                                <td class="center">
+                                    @php
+                                        $label = '';
+                                        if($user->verified == 'yes')
+                                        {
+                                            $label = 'label-success';
+                                        } elseif($user->verified == 'pending')
+                                        {
+                                            $label = 'label-warning';
+                                        } elseif($user->verified = 'no')
+                                        {
+                                            $label = 'label-default';
+                                        }
+                                    @endphp
+                                    <span class="label {{$label}}">{{$user->verified}}</span>
+                                </td>
+                                <td class="center">{{count($user->businesses)?:0 }}</td>
+                                @if($user->verified == 'yes')
+                                    <td class="center"><a href="/admin/user/verify/{{$user->id}}">Verify</a></td>
+                                @else
+                                    <td class="center"><a href="/admin/user/unverify/{{$user->id}}">Unverify</a></td>
+                                @endif
+                                <td>
+                                    <a href="/admin/deleteuser/{{$user->id}}">Delete</a>
+                                </td>
+                            </tr>
                         @endforeach
                         </tbody>
                     </table>

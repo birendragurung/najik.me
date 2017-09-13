@@ -29,8 +29,8 @@
     <link href="/css/ark/prettify.css" rel="stylesheet" type="text/css" />
     <link href="/ark/fullcalendar/dist/fullcalendar.css" rel="stylesheet" />
     <link href="/css/plugins/fullcalendar/fullcalendar.print.css" rel="stylesheet" media="print" />
-    <link href="/css/ark/ark.css" rel="stylesheet" type="text/css" />
     <link href="/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="/css/ark/ark.css" rel="stylesheet" type="text/css" />
 
 
     <!--[if lt IE 9]>
@@ -43,7 +43,7 @@
 <body class="cover">
     <div class="wrapper">
         {{--Include the header--}}
-        @include('dashboard.header')
+        @include('layouts.header')
 
         <!-- BODY -->
         <div class="body">

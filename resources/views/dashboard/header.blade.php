@@ -1,7 +1,7 @@
     <!-- HEAD NAV -->
     <div class="navbar navbar-default navbar-static-top navbar-main" role="navigation">
         <div class="navbar-header">
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand" href="/">
                 <span>NajikMe</span>
             </a>
         </div>
@@ -121,7 +121,7 @@
                     <li><a href="#"><i class="fa fa-gear"></i>Account Settings</a></li>
                     <li><a href="profile.html"><i class="fa fa-user"></i>View Profile</a></li>
                     <li class="divider"></li>
-                    <li><a href="login.html"><i class="fa fa-sign-out"></i>Logout</a></li>
+                    <li><a href="/logout"><i class="fa fa-sign-out"></i>Logout</a></li>
                 </ul>
             </li>
         </ul>

@@ -278,4 +278,19 @@ class UserBusinessController extends Controller
             return redirect()->back()->with('message' ,'Somethings went wrong. Cannot delete business now' );
         }
     }
+
+    public function requestPromotion(Business $business, $days)
+    {
+        $newPromotion = isset($business->promotion) ? $business->promotion : $business->promotion()->create([
+            'business_id' =>$business->id,
+            'status' => 'requested' ,
+            'promotion_period'=> $days . ' days',
+        ]);
+        $newPromotion->business_id = $business->id;
+        $newPromotion->status = "requested";
+        $newPromotion->promotion_period = $days . ' days';
+        $newPromotion->save();
+
+        return response()->json(['message' => 'Successfully requested for promotion. Please wait for admin verification' ,]);
+    }
 }

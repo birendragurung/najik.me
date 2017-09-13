@@ -24,17 +24,11 @@
                 @else
                     {{--<li ><a href="#">Publish</a></li>--}}
                 @endif
-                {{--<li class="menu-item menu-search">--}}
-                {{--<div class="search-wrapper">--}}
-                {{--<form class="form-horizontal" role="form" method="POST" action="{{ url('/search') }}">--}}
-                {{--{{ csrf_field() }}--}}
-                {{--<div class="input-wrapper">--}}
-                {{--<input name="q" type="text" placeholder="Search books..." required oninvalid="try{this.setCustomValidity('Enter Some Name')}" id="search_input" value="{{  $query or '' }}">--}}
-                {{--</div>--}}
-                {{--<input type="submit" class="button fa fa-search" value="&#xf002;">--}}
-                {{--</form>--}}
-                {{--</div>--}}
-                {{--</li>--}}
+                @if(Auth::user() && Auth::user()->isAdmin)
+                    <li>
+                        <a href="/admin/dashboard">Admin dashboard</a>
+                    </li>
+                @endif
             </ul>
 
             <!-- Right Side Of Navbar -->
@@ -55,15 +49,17 @@
                     <li>
                         <a href="{{url('/categories')}}"><i class="fa fa-list"></i> Categories</a>
                     </li>
+
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                             {{ Auth::user()->name }} <span class="caret"></span>
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
-                            <li>
-                                <a href="/myprofile">My profile</a>
-                            </li>
+                            {{--<li>--}}
+                                {{--<a href="/myprofile">My profile</a>--}}
+                            {{--</li>--}}
+
                             <li>
                                 <a href="/mybusinesses">My businesses</a>
                             </li>

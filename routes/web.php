@@ -120,6 +120,8 @@ Route::group(['name' => 'Business Private Routes' , 'middleware' => 'auth'] , fu
     Route::get('/business/edit/{business}' , 'UserBusinessController@getEditBusinessForm')->where('business', '[0-9]+');
 
     Route::post('/business/edit/{business}' , 'UserBusinessController@updateBusiness')->where('business', '[0-9]+');
+
+    Route::get('/business/request/promotion/{business}/{days}' , 'UserBusinessController@requestPromotion');
 });
 
 
@@ -132,17 +134,31 @@ Route::group(['name' => 'Admin Dashboard', 'middleware' => 'admin' ] , function(
 {
     Route::get('/admin/dashboard' , 'AdminDashboardController@dashboardHome');
 
-    Route::get('promote/{business}' ,  "AdminDashboardController@promoteBusiness");
+    Route::get('/admin/user/newusers' , 'AdminDashboardController@showNewUsers');
 
-    Route::get('/user/delete/{user}' , "AdminDashboardController@deleteUser");
+    Route::get('/admin/user/all' , 'AdminDashboardController@showAllUsers');
 
-    Route::get('/user/delete/{user}' , "AdminDashboardController@deleteUser");
+    Route::get('/admin/deleteuser/{user}' , "AdminDashboardController@deleteUser");
 
-    Route::get('/user/verify/{user}' , "AdminDashboardController@verifyUser");
+    Route::get('/admin/user/verify' , "AdminDashboardController@showVerifyUser");
 
-    Route::get('/business/delete/{business}' , "AdminDashboardController@deleteBusiness");
+    Route::get('/admin/user/unverify/{user}' , "AdminDashboardController@unverifyUser");
 
-    Route::get('/business/verify/{business}' , "AdminDashboardController@verifyBusiness");
+    Route::get('/admin/user/verify/{user}' , "AdminDashboardController@verifyUser");
+
+    Route::get('/admin/business/all' , "AdminDashboardController@showBusinesses");
+
+    Route::get('/admin/business/new' , 'AdminDashboardController@showNewBusinesses');
+
+    Route::get('/admin/business/delete/{business}' , "AdminDashboardController@deleteBusiness");
+
+    Route::get('/admin/business/verify/{business}' , "AdminDashboardController@verifyBusiness");
+
+    Route::get('/admin/promotion/requests' , "AdminDashboardController@showPromotionRequests");
+
+    Route::get('/promote/{business}' ,  "AdminDashboardController@promoteBusiness");
+
+    Route::get('/promote/promotedbusinesses}' ,  "AdminDashboardController@showPromotedBusiness");
 
 });
 

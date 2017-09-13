@@ -1,7 +1,7 @@
     <!-- HEAD NAV -->
     <div class="navbar navbar-default navbar-static-top navbar-main" role="navigation">
         <div class="navbar-header">
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand" href="/">
                 <span>NajikMe</span>
             </a>
         </div>

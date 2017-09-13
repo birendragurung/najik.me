@@ -145,7 +145,7 @@
                         </div>
 
                         <div class="col-sm-4">
-                            <label for="business-open-upto" class="col-sm-3 col-sm-offset-4 control-label">open_upto</label>
+                            <label for="business-open-upto" class="col-sm-3 col-sm-offset-4 control-label">Open upto</label>
                             <input type="text" id="business-open-upto" value="{{old('business_open_from')}}" name="business_open_upto" class="form-control col-sm-offset-3">
 
                             @if ($errors->has('business_open_from'))
@@ -165,7 +165,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="business-phone-number" class="col-sm-3 control-label align-left">phone_number</label>
+                        <label for="business-phone-number" class="col-sm-3 control-label align-left">Phone number</label>
 
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="business-phone-number" value="{{old('business_phone_number')}}" name="business_phone_number">
@@ -179,7 +179,7 @@
                         @endif
                     </div>
                     <div class="form-group">
-                        <label for="business-mobile-number" class="col-sm-3 control-label align-left">mobile_number</label>
+                        <label for="business-mobile-number" class="col-sm-3 control-label align-left">Mobile number</label>
 
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="business-mobile-number" value="{{old('business_mobile_number')}}" name="business_mobile_number">
@@ -194,7 +194,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="business-phone-number" class="col-sm-3 control-label align-left">business_email</label>
+                        <label for="business-phone-number" class="col-sm-3 control-label align-left">Business email</label>
 
                         <div class="col-sm-9">
                             <input type="email" class="form-control" id="business-phone-number" value="{{old('business_email')}}" name="business_email">
@@ -209,7 +209,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="business-website" class="col-sm-3 control-label align-left">website</label>
+                        <label for="business-website" class="col-sm-3 control-label align-left">Website</label>
 
                         <div class="col-sm-9">
                             <input type="text" class="form-control" id="business-website" value="{{old('business_website')}}" name="business_website">

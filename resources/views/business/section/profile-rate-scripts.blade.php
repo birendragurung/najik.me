@@ -92,18 +92,18 @@
 
         //review codes
 
-            var formEl = '<form id="business-review-edit-form" class="form-horizontal" action="/review/'+ $('.business-profile-wrapper').attr('business-id')+ '" method="post">' +
-                '                                                {{csrf_field()}}' +
-                '                                                <div class="form-group user-review-form-group">\n' +
-                '                                                    <label for="user-review-box" class="col-md-4 control-label"></label>\n' +
-                '                                                    <div class="col-md-6">\n' +
-                '                                                        <textarea type="text" id="user-review-box" name="review_comment" class="form-control mb-3" required></textarea>\n' +
-                '                                                    </div>\n' +
-                '                                                    <div class="col-md-6 col-md-offset-4">\n' +
-                '                                                        <button type="submit" href="#" class="btn btn-success">Edit Review</button>\n' +
-                '                                                    </div>\n' +
-                '                                                </div>\n' +
-                '                                            </form>';
+        var formEl = '<form id="business-review-edit-form" class="form-horizontal" action="/review/' + $('.business-profile-wrapper').attr('business-id') + '" method="post">' +
+            '                                                {{csrf_field()}}' +
+            '                                                <div class="form-group user-review-form-group">\n' +
+            '                                                    <label for="user-review-box" class="col-md-4 control-label"></label>\n' +
+            '                                                    <div class="col-md-6">\n' +
+            '                                                        <textarea type="text" id="user-review-box" name="review_comment" class="form-control mb-3" required></textarea>\n' +
+            '                                                    </div>\n' +
+            '                                                    <div class="col-md-6 col-md-offset-4">\n' +
+            '                                                        <button type="submit" href="#" class="btn btn-success">Edit Review</button>\n' +
+            '                                                    </div>\n' +
+            '                                                </div>\n' +
+            '                                            </form>';
         $('#business-review-form').submit(function (e) {
             e.preventDefault();
             $.ajax(
@@ -152,7 +152,7 @@
                         });
                         var editReview = $('.edit-review');
                         editReview.click(function (e) {
-                            if($('#business-review-edit-form').length === 0 ) {
+                            if ($('#business-review-edit-form').length === 0) {
                                 $('.user-review[user-id={{Auth::id()}}]>hr').before($(formEl));
                                 $('#business-review-edit-form').submit(function (e) {
                                     e.preventDefault();
@@ -202,7 +202,7 @@
                                                 });
                                                 var editReview = $('.edit-review');
                                                 editReview.click(function (e) {
-                                                    if($('#business-review-edit-form').length === 0 ) {
+                                                    if ($('#business-review-edit-form').length === 0) {
                                                         $('.user-review[user-id={{Auth::id()}}] .edit-review').after(formEl);
                                                     }
                                                     if ($('#business-review-edit-form').is(':visible')) {
@@ -294,7 +294,7 @@
                         });
                         var editReview = $('.edit-review');
                         editReview.click(function (e) {
-                            if($('#business-review-edit-form').length === 0 ) {
+                            if ($('#business-review-edit-form').length === 0) {
                                 $('.user-review[user-id={{Auth::id()}}] .edit-review').after(formEl);
                             }
                             if ($('#business-review-edit-form').is(':visible')) {
@@ -334,7 +334,7 @@
         $('#business-review-edit-form').hide();
         var editReview = $('.edit-review');
         editReview.click(function (e) {
-            if($('#business-review-edit-form').length === 0 ) {
+            if ($('#business-review-edit-form').length === 0) {
                 $('.user-review[user-id={{Auth::id()}}]>hr').before($(formEl));
                 $('#business-review-edit-form').submit(function (e) {
                     e.preventDefault();
@@ -384,7 +384,7 @@
                                 });
                                 var editReview = $('.edit-review');
                                 editReview.click(function (e) {
-                                    if($('#business-review-edit-form').length === 0 ) {
+                                    if ($('#business-review-edit-form').length === 0) {
                                         $('.user-review[user-id={{Auth::id()}}] .edit-review').after(formEl);
                                     }
                                     if ($('#business-review-edit-form').is(':visible')) {
@@ -414,6 +414,24 @@
             } else {
                 $('#business-review-edit-form').show();
             }
+        });
+        $('#request-for-promotion').click(function (e) {
+            var days = $('#promotion-period-days').val();
+            $.ajax({
+                url: '/business/request/promotion/' + $(this).parents('.business-profile-wrapper').attr('business-id') + '/' + days,
+                method: 'get',
+                success: function (response) {
+                    alert(response.message);
+                    // language=HTML
+                    $('#promotion-period-days').parents('.promote-business-form')
+                        .html("<hr>" +
+                            "<h3>Promote business</h3>" +
+                        "<h4>This business has been requested for promotion.</h4>");
+                },
+                error: function (e) {
+                    console.long(e);
+                }
+            });
         });
     });
 

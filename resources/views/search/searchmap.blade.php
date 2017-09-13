@@ -43,8 +43,10 @@ use Illuminate\Support\Str;
                 @if(isset($businesses))
                     @include("business.section.businesscard" , ['businesses' =>$businesses ])
                 @elseif(isset($promotedBusinesses))
-                    <h2>Featured businesses</h2>
+                    <h2 class="mb-3">Featured businesses</h2>
                     @include("business.section.businesscard" , ['businesses' =>$promotedBusinesses ])
+                    <h2 class="mb-3">Top rated businesses</h2>
+                    @include('business.section.businesscard',['businesses' =>$topRatedBusinesses ])
                 @endif
             </div>
 

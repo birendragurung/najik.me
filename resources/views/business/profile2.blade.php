@@ -24,7 +24,7 @@ $categories = Category::all();
         <div class="row">
             <div class="col-lg-9">
                 <div class="business-profile-wrapper" business-id={{$business->id}} lat="{{$business->address->latitude }}" long="{{$business->address->longitude }}">
-                    <div class="card mt-4 business-profile-wrapper">
+                    <div class="card mt-4">
                         <div class="profile-image-wrapper">
                             <img class="card-img-top img-fluid" src="{{$business->profilePic }}" alt="{{$business->name}}" />
                             @if($business->isVerified)
@@ -85,6 +85,21 @@ $categories = Category::all();
                                 @elseif(Auth::user() && (Auth::id() == $business->user->id ))
                                     <div class="col-sm-8 col-md-8 col-lg-9 mb-3">
                                         <a href="/business/edit/{{$business->id}}" id="edit-business-button" type="submit" value="Edit my business" class="btn btn-default">Edit my business</a>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-12 promote-business-form">
+                                        <hr />
+
+                                        <h3>Promote business</h3>
+                                        @if($business->promotion && $business->promotion->status == 'requested')
+                                            <h4>This business has been requested for promotion.</h4>
+                                        @elseif($business->promotion && $business->promotion->status == 'active')
+                                            <h4>This business has been promoted currently.</h4>
+                                        @else
+                                            <a href="#request-for-promotion" class="btn btn-default" id="request-for-promotion">Request for promotion</a>
+                                            <div class="mt-2 col-sm-3 col-md-3 col-lg-3">
+                                                <input class="form-control " id="promotion-period-days" type="number" value="10"> days
+                                            </div>
+                                        @endif
                                     </div>
                                 @endif
                             </div>

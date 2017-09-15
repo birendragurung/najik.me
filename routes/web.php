@@ -32,18 +32,14 @@ use Illuminate\Support\Facades\Route;
  * Illuminate\Routing\Router::auth();
  */
 Auth::routes();
-Route::get('register/verify/{confirmationCode}', [
-    'as' => 'confirmation_path',
-    'uses' => 'RegisterController@confirm'
-]);
+Route::get('register/verify/{confirmationCode}' , ['as'   => 'confirmation_path' ,
+                                                   'uses' => 'RegisterController@confirm']);
 Route::get('/' , "HomeController@index");
 
-Route::group(['name'=>'home routes', "middleware" =>'auth' ], function()
-{
+Route::group(['name' => 'home routes' , "middleware" => 'auth'] , function(){
 
 
-    Route::get("/logout" , function()
-    {
+    Route::get("/logout" , function(){
         if(Auth::user())
         {
             Auth::logout();
@@ -60,8 +56,7 @@ Route::group(['name'=>'home routes', "middleware" =>'auth' ], function()
 //////////////      User Routes Group        //////////////////
 ///////////////////////////////////////////////////////////////
 
-Route::group(['name' => 'user','middleware' =>'auth'] , function()
-{
+Route::group(['name' => 'user' , 'middleware' => 'auth'] , function(){
     //TODO add user profile, my businesses list page
     Route::get('/user/profile' , 'UserController@profile');
 
@@ -83,14 +78,13 @@ Route::group(['name' => 'user','middleware' =>'auth'] , function()
 //////////  Business Routes Group with No middleware    ///////
 ///////////////////////////////////////////////////////////////
 
-Route::group(['name' => 'Business public routes'] , function()
-{
-    Route::get('/business/{id}' , 'UserBusinessController@getBusiness')->where('id', '[0-9]+');
+Route::group(['name' => 'Business public routes'] , function(){
+    Route::get('/business/{id}' , 'UserBusinessController@getBusiness')->where('id' , '[0-9]+');
 
-    Route::get('business/profile/{business}' , function(Business $business)
-    {
+    Route::get('business/profile/{business}' , function(Business $business){
         $rating = (new SearchController())->getBusinessRatings($business);
-        return view('business.profile2',['business'=> $business]);
+
+        return view('business.profile2' , ['business' => $business]);
     });
 });
 
@@ -99,27 +93,25 @@ Route::group(['name' => 'Business public routes'] , function()
 /////   Business Routes Group with Auth middleware  ///////////
 ///////////////////////////////////////////////////////////////
 
-Route::group(['name' => 'Business Private Routes' , 'middleware' => 'auth'] , function()
-{
+Route::group(['name' => 'Business Private Routes' , 'middleware' => 'auth'] , function(){
 
-    Route::get('mybusinesses' , function()
-    {
+    Route::get('mybusinesses' , function(){
         $myBusinesses = Auth::user()->businesses;
-        return view('business.mybusinesses',[
 
-            'myBusinesses'=>$myBusinesses
-        ]);
+        return view('business.mybusinesses' , [
+
+            'myBusinesses' => $myBusinesses]);
     });
 
     Route::delete('/business/{business}' , "UserBusinessController@deleteBusiness");
 
-    Route::get('/business/add' ,'UserBusinessController@addBusinessForm');
+    Route::get('/business/add' , 'UserBusinessController@addBusinessForm');
 
     Route::post('/business/add' , 'UserBusinessController@addNewBusiness');
 
-    Route::get('/business/edit/{business}' , 'UserBusinessController@getEditBusinessForm')->where('business', '[0-9]+');
+    Route::get('/business/edit/{business}' , 'UserBusinessController@getEditBusinessForm')->where('business' , '[0-9]+');
 
-    Route::post('/business/edit/{business}' , 'UserBusinessController@updateBusiness')->where('business', '[0-9]+');
+    Route::post('/business/edit/{business}' , 'UserBusinessController@updateBusiness')->where('business' , '[0-9]+');
 
     Route::get('/business/request/promotion/{business}/{days}' , 'UserBusinessController@requestPromotion');
 });
@@ -130,8 +122,7 @@ Route::group(['name' => 'Business Private Routes' , 'middleware' => 'auth'] , fu
 ///////////////////////////////////////////////////////////////
 //uses App\Http\Middleware\IsAdmin middleware
 
-Route::group(['name' => 'Admin Dashboard', 'middleware' => 'admin' ] , function()
-{
+Route::group(['name' => 'Admin Dashboard' , 'middleware' => 'admin'] , function(){
     Route::get('/admin/dashboard' , 'AdminDashboardController@dashboardHome');
 
     Route::get('/admin/user/newusers' , 'AdminDashboardController@showNewUsers');
@@ -140,9 +131,7 @@ Route::group(['name' => 'Admin Dashboard', 'middleware' => 'admin' ] , function(
 
     Route::get('/admin/deleteuser/{user}' , "AdminDashboardController@deleteUser");
 
-    Route::get('/admin/user/verify' , "AdminDashboardController@showVerifyUser");
-
-    Route::get('/admin/user/unverify/{user}' , "AdminDashboardController@unverifyUser");
+    Route::get('/admin/addadmin/{user}' , "AdminDashboardController@addAsAdmin");
 
     Route::get('/admin/user/verify/{user}' , "AdminDashboardController@verifyUser");
 
@@ -156,9 +145,9 @@ Route::group(['name' => 'Admin Dashboard', 'middleware' => 'admin' ] , function(
 
     Route::get('/admin/promotion/requests' , "AdminDashboardController@showPromotionRequests");
 
-    Route::get('/promote/{business}' ,  "AdminDashboardController@promoteBusiness");
+    Route::get('/promote/{business}' , "AdminDashboardController@promoteBusiness");
 
-    Route::get('/promote/promotedbusinesses}' ,  "AdminDashboardController@showPromotedBusiness");
+    Route::get('/admin/promotedbusinesses' , "AdminDashboardController@showPromotedBusiness");
 
 });
 
@@ -167,27 +156,25 @@ Route::group(['name' => 'Admin Dashboard', 'middleware' => 'admin' ] , function(
 //////////       Search Route Group      ///////////////
 ///////////////////////////////////////////////////////////////
 
-Route::group(['name' => 'Search'] , function()
-{
+Route::group(['name' => 'Search'] , function(){
     Route::get('search' , 'SearchController@getSearchPage');
 
-    Route::get('/search/map','SearchController@mapSearch');
+    Route::get('/search/map' , 'SearchController@mapSearch');
 
-    Route::get('/search/map/{latitude}/{longitude}/{distance?}' , 'SearchController@getMapSearch');
+    Route::get('/search/map/{latitude}/{longitude}/{distance?}/{category?}' , 'SearchController@getMapSearch');
 
     Route::get('/search/results' , 'SearchController@getSearchResult');
 
-    Route::get('/categories/{category}/{category_name?}', 'SearchController@getCategorySearch');
+    Route::get('/categories/{category}/{category_name?}' , 'SearchController@getCategorySearch');
 
-    Route::get('/categories' , function()
-    {
-        $cats = Category::all();
-        $topRatedBusinesses = (new Rating())->topRatedBusinesses ;
+    Route::get('/lcs/{key}' , 'SearchController@lcsSearch');
 
-        return view('search.categories' , [
-            'categories' =>$cats,
-            'popularBusinesses' => $topRatedBusinesses
-        ]);
+    Route::get('/categories' , function(){
+        $cats               = Category::all();
+        $topRatedBusinesses = (new Rating())->topRatedBusinesses;
+
+        return view('search.categories' , ['categories'        => $cats ,
+                                           'popularBusinesses' => $topRatedBusinesses]);
 
     });
 
@@ -199,16 +186,14 @@ Route::group(['name' => 'Search'] , function()
 ///////////     Image resources Route Group   //////////////////
 ///////////////////////////////////////////////////////////////
 
-Route::group(['name' => 'File Routes'] , function()
-{
-    Route::get('/business/uploads/{url?}', 'ImageController@getBusinessUploads');
+Route::group(['name' => 'File Routes'] , function(){
+    Route::get('/business/uploads/{url?}' , 'ImageController@getBusinessUploads');
 
     Route::get('business/profilepic/{url}' , 'ImageController@getBusinessProfilePic');
 
     Route::get('/business/profile.jpg' , 'ImageController@getDefaultBusinessProfilePic');
 
 });
-
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -218,20 +203,18 @@ Route::group(['name' => 'File Routes'] , function()
  * Testing Eloquent relations for our models
  *
  */
-Route::group(['name' => 'eloquent_relations' ,'middleware' => 'auth'] , function(){
+Route::group(['name' => 'eloquent_relations' , 'middleware' => 'auth'] , function(){
     /*
      * Test routes for Eloquent relationships between models
      */
-    Route::get('/businessowner' , ['middleware' => 'auth' , function(Business $business)
-        {
-           $user = $business->find(1)->user()->get();
-           dump($user);
-        }
-    ]);//works
+    Route::get('/businessowner' , ['middleware' => 'auth' ,
+                                   function(Business $business){
+                                       $user = $business->find(1)->user()->get();
+                                       dump($user);
+                                   }]);//works
 
 
-    Route::get('/bcategory' , function(Business $business)
-    {
+    Route::get('/bcategory' , function(Business $business){
         $cats = $business->find(1)->categories()->get();
         foreach($cats as $cat)
         {
@@ -239,8 +222,7 @@ Route::group(['name' => 'eloquent_relations' ,'middleware' => 'auth'] , function
         }
     });//works
 
-    Route::get('/busproducts' , function(Business $business)
-    {
+    Route::get('/busproducts' , function(Business $business){
         $products = $business->find(1)->products();
         $products = $products->get();
         //$business->products()->get() ;
@@ -251,8 +233,7 @@ Route::group(['name' => 'eloquent_relations' ,'middleware' => 'auth'] , function
 
     });//worked
 
-    Route::get('/getcatbusiness' , function()
-    {
+    Route::get('/getcatbusiness' , function(){
         $one  = Business::find(1)->first();
         $cats = $one->categories()->get();
         //dd($cats);
@@ -262,8 +243,7 @@ Route::group(['name' => 'eloquent_relations' ,'middleware' => 'auth'] , function
         }
     });//worked
 
-    Route::get('/address' , function(App\Address $address)
-    {
+    Route::get('/address' , function(App\Address $address){
         $user = User::find(1)->first();
         //dd($user);
         foreach($user->address()->get() as $add)
@@ -273,8 +253,7 @@ Route::group(['name' => 'eloquent_relations' ,'middleware' => 'auth'] , function
         }
     });//works
 
-    Route::get('/products' , function()
-    {
+    Route::get('/products' , function(){
         $products = Business::find(1)->first()->products();
         foreach($products as $product)
         {
@@ -282,8 +261,7 @@ Route::group(['name' => 'eloquent_relations' ,'middleware' => 'auth'] , function
         }
     });//Works well..
 
-    Route::get('/usermeta' , function()
-    {
+    Route::get('/usermeta' , function(){
         $userMetas = UserMeta::where('user_id' , '=' , Auth::id())->get();
         foreach($userMetas as $userMeta)
         {
@@ -295,29 +273,26 @@ Route::group(['name' => 'eloquent_relations' ,'middleware' => 'auth'] , function
         //echo $meta;
     });//workd
 
-    Route::get('factory' , function()
-    {
-        factory(App\User::class, 10)->create()->each(function(User $u) {
+    Route::get('factory' , function(){
+        factory(App\User::class , 10)->create()->each(function(User $u){
             //$u->userMeta()->save(factory(App\UserMeta::class)->make());
             //dump($u);
             $add = $u->address()->save(factory(App\Address::class)->make());
             dump($add);
-            dump($u->address()->get() );
+            dump($u->address()->get());
         });
     });//works
 
-    Route::get('/addressable', function()
-    {
+    Route::get('/addressable' , function(){
         $add = Address::find(152);
         //dump($add->addressable);
-        $b  = $add->addressable;
+        $b = $add->addressable;
         dump($b);
     });//works.. gives the model instance of the owning model ie business, user, etc
 
-    Route::get('/subcategories' , function()
-    {
+    Route::get('/subcategories' , function(){
         $categories = Category::find(1);
-        $sub = $categories->children;
+        $sub        = $categories->children;
         dump($categories);
         dump($sub);
     });//workd
@@ -590,8 +565,80 @@ Route::group(['name' => 'testingroutes'] , function(){
         //usort($a[] , 'size');
     });
 
-    Route::get('clcs' , function(){
-        $lcs = (new SearchController())->longestCommonSubsequence(str_split('butwal durbarb') , str_split('durbar business'));
-        dump($lcs);
+Route::get('clcs' , function(){
+    $lcs = (new SearchController())->longestCommonSubsequence(str_split('butwal durbarb') , str_split('durbar business'));
+    dump($lcs);
+});
+});
+
+
+Route::get('/deleteFarBusiness42423de', function(){
+    $businesses = Business::all();
+    DB::beginTransaction();
+    try
+    {
+        $businesses->each(function($business){
+            if($business->address == null)
+            {
+                $business->delete();
+            }
+            elseif($business->address->latitude < 26 || $business->address->latitude > 28)
+            {
+                $business->address->delete();
+                $business->delete();
+            }
+            elseif($business->address->longitude < 83 || $business->address->longitude > 85)
+            {
+                $business->address->delete();
+                $business->delete();
+            }
+        });
+    } catch(Exception $exception)
+    {
+        DB::rollBack();
+        echo 'failed';
+    }
+    DB::commit();
+});
+
+Route::get('/deleteFarBusinesses23ewwe', function(){
+    $addresses = Address::where('latitude' ,'<' ,'26')
+        ->orWhere('latitude' ,'>' ,'28')
+        ->orWhere('longitude' ,'<' ,'83')
+        ->orWhere('longitude' ,'>' ,'84')
+        ->get();
+    DB::beginTransaction();
+    try
+    {
+        foreach($addresses as $address)
+        {
+            if($address->business == null )
+            {
+                $address->delete();
+            }else{
+                $address->business->delete();
+                $address->delete();
+            }
+        }
+
+    } catch(Exception $exception)
+    {
+        DB::rollBack();
+        echo 'failed';
+    }
+    DB::commit();
+});
+
+Route::get('/del' , function(){
+    $nearbyAddresses  = Address::select(DB::raw('*, ( 3959 * acos( cos( radians(' . 27.6863 . ') ) * cos( radians( latitude ) ) * cos( radians(longitude ) - radians(' . 83.4648 . ') ) + sin( radians(' . 27.6863 . ') ) * sin( radians( latitude ) ) ) ) AS distance'))
+        ->where('entity_type' , Business::class)
+        ->having('distance' , '>' , 40)
+        ->orderBy('distance')
+        ->get();
+    $nearbyAddresses->each(function($add){
+        $add->business?$add->business ->delete():false;
+
+        $add->entity_type == 'App\Business'? $add->delete():false;
     });
+    dd($nearbyAddresses);
 });

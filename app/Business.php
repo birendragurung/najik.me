@@ -92,21 +92,6 @@ class Business extends Model
         return $this->MorphOne(Address::class , 'entity');
     }
 
-    /*
-     * Get the business's services
-     */
-    public function services()
-    {
-        return $this->hasMany(Service::class);
-    }
-
-    /*
-    * Get the business's products
-    */
-    public function products()
-    {
-        return $this->hasMany(Product::class);
-    }
 
     ///*
     //* Get the business's categories

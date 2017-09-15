@@ -16,6 +16,7 @@ use Illuminate\Support\Str;
                                 @endif
                             </div>
                             <div class="card-body col-xs-12 col-sm-12 col-md-12">
+                                {!! $business->distance?'<i class="fa fa-map-marker" aria-hidden="true"></i> ' . $business->distance :""  !!}
                                 <h4 class="card-title">{{$business->name }}</h4>
                                 <h6><a href="/categories/{{$business->category->id}}">{{$business->categoryName }}</a></h6>
                                 <p class="card-text">{{Str::limit($business->description, 100) }}</p>

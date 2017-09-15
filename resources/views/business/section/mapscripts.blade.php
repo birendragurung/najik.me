@@ -5,6 +5,7 @@
     // failed.", it means you probably did not give permission for the browser to
     // locate you.
     var map, infoWindow, LatLng;
+
     function initMap() {
         //LatLng for storing any old coordinates..
         LatLng = {
@@ -14,20 +15,12 @@
 
         @if(isset($address))
         //This is for the editbusiness blade file where address of the business is passed to this blade
-        LatLng = {lat: {{$address->latitude}} , lng: {{$address->longitude}} };
+        LatLng     = {lat: {{$address->latitude}} , lng: {{$address->longitude}} };
         @endif
-        LatLng  =(Object.keys(LatLng).length === 0 && LatLng.constructor === Object) ? {
+            LatLng = (Object.keys(LatLng).length === 0 && LatLng.constructor === Object) ? {
             lat: 27.690497,
             lng: 83.465111
         } : LatLng;
-        console.log('LatLng  :' + LatLng);
-        map = new google.maps.Map(document.getElementById('map'), {
-            //If previous request has lat and lng values, use that value else use default lat lng value
-            //REF: https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
-            center: LatLng,
-            zoom: 16
-        });
-        infoWindow = new google.maps.InfoWindow();
 
         //Custom styles.
         //REF : http://logicify.github.io/jquery-locationpicker-plugin/
@@ -61,13 +54,51 @@
             "elementType": "labels.text.stroke",
             "stylers": [{"saturation": -64}, {"hue": "#ff9100"}, {"lightness": 16}, {"gamma": 0.47}, {"weight": 2.7}]
         }];
+        var mapOptions = {
+            "zoom": 14,
+            "center": new google.maps.LatLng(LatLng),
+            "styles": [{"featureType": "poi", "stylers": [{"visibility": "off"}]}, {
+                "featureType": "administrative",
+                "elementType": "labels.text.fill",
+                "stylers": [{"color": "#444444"}]
+            }, {
+                "featureType": "landscape",
+                "elementType": "all",
+                "stylers": [{"color": "#f2f2f2"}]
+            }, {
+                "featureType": "poi",
+                "elementType": "all",
+                "stylers": [{"visibility": "off"}]
+            }, {
+                "featureType": "road",
+                "elementType": "all",
+                "stylers": [{"saturation": -100}, {"lightness": 45}]
+            }, {
+                "featureType": "road.highway",
+                "elementType": "all",
+                "stylers": [{"visibility": "simplified"}]
+            }, {
+                "featureType": "road.arterial",
+                "elementType": "labels.icon",
+                "stylers": [{"visibility": "off"}]
+            }, {
+                "featureType": "transit",
+                "elementType": "all",
+                "stylers": [{"visibility": "off"}]
+            }, {
+                "featureType": "water",
+                "elementType": "all",
+                "stylers": [{"color": "#46bcec"}, {"visibility": "on"}]
+            }]
+        };
+        console.log('LatLng  :' + LatLng);
+        map        = new google.maps.Map(document.getElementById('map'), mapOptions);
+        infoWindow = new google.maps.InfoWindow();
 
         $("#map").locationpicker({
             //set to default location when there's no previously defined/saved coordinates
-            location: { latitude : LatLng.lat , longitude : LatLng.lng },
+            location:{latitude:map.getCenter().lat(),longitude:map.getCenter().lng()},
             radius: 0,
-            {{isset($markerDraggableDisable)?$markerDraggableDisable:""}}
-
             inputBinding: {
                 latitudeInput: $('#business-lat'),
                 longitudeInput: $('#business-lon'),
@@ -105,8 +136,8 @@
     function handleLocationError(browserHasGeolocation, infoWindow, pos) {
         infoWindow.setPosition(pos);
         infoWindow.setContent(browserHasGeolocation ?
-                'Error: The Geolocation service failed.' :
-                'Error: Your browser doesn\'t support geolocation.');
+            'Error: The Geolocation service failed.' :
+            'Error: Your browser doesn\'t support geolocation.');
         infoWindow.open(map);
     }
 </script>

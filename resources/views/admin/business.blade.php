@@ -29,17 +29,38 @@
                             <th>Email</th>
                             <th>Website</th>
                             <th>Verified</th>
+                            <th></th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($businesses as $business)
                             <tr class="gradeA odd" role="row">
                                 <td class="sorting_1">{{$business->id}}</td>
-                                <td>{{$business->name}}</td>
+                                <td><a href="/business/{{$business->id}}">{{$business->name}}</a></td>
                                 <td>{{substr($business->description, 0 , 130)}}</td>
                                 <td class="center">{{$business->email}}</td>
                                 <td class="center">{{$business->website}}</td>
-                                <td class="center">{{$business->verified}}</td>
+                                <td class="center">
+                                    @php
+                                        $label = '';
+                                        if($business->verified == 'yes')
+                                        {
+                                            $label = 'label-success';
+                                        } elseif($business->verified == 'pending')
+                                        {
+                                            $label = 'label-warning';
+                                        } elseif($business->verified = 'no')
+                                        {
+                                            $label = 'label-default';
+                                        }
+                                    @endphp
+                                    <span class="label {{$label}}">{{$business->verified}}</span>
+                                </td>
+                                <td class="center"><a href="#verify-business-{{$business->id}}" id="verify-business-{{$business->id}}" onclick="verifyBusiness({{$business->id}})"  class="verify-button">{{$business->verified == 'yes'?'Unverify':'Verify' }}</a></td>
+                                <td>
+                                    <a href="#delete-{{$business->id}}" id="delete-{{$business->id}}" onclick="deletebusiness({{$business->id}})" data-url="/admin/deletebusiness/{{$business->id}}">Delete</a>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -49,4 +70,7 @@
         </div>
         <!-- END: CONTENT -->
     </section>
+    @push('footerscripts')
+        @include('admin.adminscripts')
+    @endpush
 @endsection

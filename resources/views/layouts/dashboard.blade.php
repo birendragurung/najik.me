@@ -89,7 +89,7 @@
     <script src="/ark/nestable/jquery.nestable.js"></script>
     <script src="/ark/ckeditor/ckeditor.js"></script>
     {{--<script src="/css/ark/prettify.js"></script>--}}
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABa3_QsifCyHhVppeEPPElKetaSh9Wkhs&callback=initMap"></script>
+    {{--<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABa3_QsifCyHhVppeEPPElKetaSh9Wkhs&callback=initMap"></script>--}}
     <script src="/js/plugins/dataTables/jquery.dataTables.min.js"></script>
     <script src="/js/ark.min.js"></script>
     {{--<script src="/js/ark.js"></script>--}}

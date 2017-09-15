@@ -35,6 +35,11 @@ $categories = Category::all();
                             <h3 class="card-title"><a href="/business/profile/{{$business->id}}">{{$business->name}}</a>
                             </h3>
                             <h4><a href="/category/{{$business->category->id}}">{{$business->categoryName}}</a></h4>
+
+                            <button id="show-map" type="button" class="btn btn-lg" data-state = 'initial' onclick="slideMap()">Show map</button>
+
+                            <div id="map"></div>
+                            
                             <div class="card-footer">
                                 <div class="row">
                                     <div class="col-sm-12 col-md-12 col-lg-12 mb-3">
@@ -184,6 +189,29 @@ $categories = Category::all();
     @include('business.section.mapmodal')
 
     @push('footerscripts')
+        @include('business.section.mapscripts',['address' => $business->address])
         @include('business.section.profile-rate-scripts')
+        <script>
+            $('#map').css({position:'absolute', top: '-1000px'});
+            function slideMap() {
+                var map = $('#map');
+                if ($('#show-map').attr('data-state') === 'initial') {
+                    $('#show-map').attr('data-state', "");
+                    map.show();
+                    map.css({position:'relative' , top:'0'});
+                    scroll_to('#show-map', 1);
+
+                }else if (map.is(':visible')) {
+                    map.hide();
+                    map.css({position:'absolute', top: '-1000px'});
+
+                }
+                else{
+                    map.show();
+                    map.css({position:'relative' , top:'0'});
+                    scroll_to(map, 1);
+                }
+            }
+        </script>
     @endpush
 @endsection

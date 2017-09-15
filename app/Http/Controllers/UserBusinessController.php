@@ -28,7 +28,7 @@ class UserBusinessController extends Controller
             $businessProfilePic = $business->file->where("meta_name" , '=' , 'business_profile_pic')->first();
             //$profilePicFilename = $businessProfilePic->filename . $businessProfilePic->file_extension;
             $address = $business->address;
-
+            (new SearchController())->getBusinessRatings($business);
             return view('business.profile2' , [
 
                 'business'           => $business

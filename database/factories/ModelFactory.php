@@ -35,25 +35,34 @@ $factory->define(App\UserMeta::class , function(Faker\Generator $faker)
 });
 $factory->define(App\Address::class , function(Faker\Generator $faker)
 {
-    return ['address'     => $faker->streetAddress ,
+    return [
+        'street_address'     => $faker->streetAddress ,
             'town'        => $faker->randomElement(['Butwal' ,'Dharan' ,'Palpa' ,'Kathmandu' ,'Biratnagar' ,'Pokhara' ,'Itahari' ,'Bhaktapur']) ,
             'state'       => $faker->randomElement(['Lumbini' , 'Arizona' , 'California']) ,
             'country'     => 'Nepal' ,
             'zip_code'    => $faker->postcode ,
-            'latitude'    => $faker->latitude ,
-            'longitude'   => $faker->longitude ,
+            'latitude'    => $faker->randomFloat(6,27 , 27.6) ,
+            'longitude'   => $faker->randomFloat(6,83 , 83.6) ,
     ];
 });
 $factory->define(App\File::class , function(Faker\Generator $faker)
 {
-    return ['filename'  => $faker->file('/user/') ,
-            'meta_name' => $faker->randomElement(['citizenship_document' , 'driver_license' ])
-    ];
+    return ['filename'  => '1503480082599d4912e8d191.44049730'  ,
+            'file_extension' =>'jpg',
+            'file_title' => 'business profile pic' ,
+            'description' => $faker->text() ,
+            'file_url' => '/business/uploads/1503480082599d4912e8d191.44049730.jpg' ,
+            'mime_type' => 'image/jpeg' ,
+            'absolute_path' => 'C:\xampp\htdocs\najik.me\storage/app/public/uploads/business/1503480082599d4912e8d191.44049730.jpg' ,
+            'parent_dir_path' => 'C:\xampp\htdocs\najik.me\storage\app/uploads/business/' ,
+
+
+            'meta_name' => $faker->randomElement(['business_profile_pic' ,])];
 });
 $factory->define(App\Business::class , function(Faker\Generator $faker)
 {
     return [
-        'user_id'=>1,
+        'user_id'=>$faker->numberBetween(2105,2540) ,
         'name' => $faker->name,
         'description' => $faker->paragraph(5) ,
         'open_from'=> '10:00',
@@ -62,6 +71,7 @@ $factory->define(App\Business::class , function(Faker\Generator $faker)
         'mobile_number' => $faker->phoneNumber ,
         'email' => $faker->safeEmail ,
         'website' =>$faker->randomElement(['https://', 'http://']) . 'www.' .  $faker->word . "." . $faker->randomElement(['com','net','edu','org'])  ,
-
+        'category_id' => $faker->numberBetween(1 , 12) ,
+        'verified' =>$faker->randomElement(['yes','no','pending'])
     ];
 });

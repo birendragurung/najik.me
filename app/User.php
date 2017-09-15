@@ -105,5 +105,14 @@ class User extends Authenticatable
         return $this->morphMany(File::class, 'entity');
     }
 
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
 
 }

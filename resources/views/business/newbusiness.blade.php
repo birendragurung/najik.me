@@ -357,6 +357,31 @@
         function validateForm() {
 
         }
+
+
+        $(document).ready(function () {
+            var x = document;
+            function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition);
+                } else {
+                    initMap();
+                    x.innerHTML = "Geolocation is not supported by this browser.";
+                }
+            }
+            function showPosition(pos) {
+                $('#business-lat').val(pos.coords.latitude).trigger('change');
+
+                $('#business-lon').val(pos.coords.longitude).trigger('change');
+              var position={};
+              position.lat=pos.coords.latitude;
+                position.lng=pos.coords.longitude;
+                var map = $("#map").data('locationpicker');
+                map.map.setCenter(position);
+            }
+
+//            getLocation();
+        });
     </script>
 
     @include('business.section.mapscripts')

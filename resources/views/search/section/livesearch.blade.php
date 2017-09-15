@@ -97,7 +97,7 @@ $categories = isset($categories) ? $categories : Category::all();
                             }
                     );
                 }
-            }, 300);
+            }, 0);
         });
     });
 

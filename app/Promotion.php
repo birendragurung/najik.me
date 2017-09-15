@@ -11,7 +11,7 @@ class Promotion extends Model
     protected $dates = ['promoted_at' ,
                         'expires_at' ,];
 
-    public static $pricePerHour = 5;
+    public static $pricePerHour = 0.5;
 
     public static function pricing($hours){
         return Promotion::$pricePerHour * $hours;

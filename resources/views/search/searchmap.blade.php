@@ -19,10 +19,34 @@ use Illuminate\Support\Str;
     @endpush
     <div class="row">
         <div id="map-box" class="col-md-12">
+            <button id="locate-me-button" class="btn btn-default">
+                <i class="fa fa-location-arrow" aria-hidden="true"></i>
+                Find my location
+            </button>
+
             <div id="search-map">
             </div>
-            <form action="/search/"></form>
-            <select name="" id=""></select>
+
+            <div class="mt-5 mb-5 container">
+                <div class="row">
+                    <div class="col-md-6"><span class="mb-5">Select distance(in Km)</span>
+                        <div id="map-distance-range" class="mt-5">
+                            <div id="custom-handle" class="ui-slider-handle">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <select class="mt-3 mb-4 form-control" name="category" id="nearby-search-category">
+                            @foreach(App\Category::all() as $category)
+                                <option value="{{$category->id}}">{{$category->name}}</option>
+                            @endforeach
+                        </select>
+                        <div class="mt-3">
+                            <input class="form-control" id="submit-nearby-search-button" type="submit" value="Search within this distance">
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div>
                 <fieldset>
                     {{--<label for="business-address">Business address</label>--}}

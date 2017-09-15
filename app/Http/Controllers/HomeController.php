@@ -26,8 +26,12 @@ class HomeController extends Controller
     {
         $promotedBusinesses = (new SearchController())->getPromotedBusinesses();
         $topRatedBusinesses = (new SearchController())->topRatedBusinesses();
-
-
+        $promotedBusinesses->each(function($business){
+            (new SearchController())->getBusinessRatings($business);
+        });
+        $topRatedBusinesses->each(function($business){
+            (new SearchController())->getBusinessRatings($business);
+        });
         return view('search.searchmap' , ['promotedBusinesses' => $promotedBusinesses ,
                                           'topRatedBusinesses' => $topRatedBusinesses]);
     }

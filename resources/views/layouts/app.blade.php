@@ -32,6 +32,7 @@ $categories = Category::all();
 </head>
 <body>
     <div id="app" class="fill">
+
         {{--Include the header--}}
         @include('layouts.header')
 

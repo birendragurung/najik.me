@@ -19,6 +19,10 @@ use Illuminate\Support\Str;
 
 <div class="row">
     <div id="map-box" class="col-md-12">
+        <button id="locate-me-button" class="btn btn-default">
+            <i class="fa fa-location-arrow" aria-hidden="true"></i>
+            Find my location
+        </button>
         <div id="search-map">
 
         </div>

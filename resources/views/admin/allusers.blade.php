@@ -3,7 +3,7 @@
 @section('content')
     <section class="content">
         <ol class="breadcrumb">
-            <li><a href="/admin/dashboard">x<i class="fa fa-home fa-fw"></i>Home</a></li>
+            <li><a href="/admin/dashboard"><i class="fa fa-home fa-fw"></i>Home</a></li>
             <li class="active">Users Tables</li>
         </ol>
 
@@ -59,7 +59,8 @@
                                 <td class="center">{{isset($user->address)? $user->address->street_address . ' ' .$user->address->town  . ' ' . $user->address->state  . ', ' . $user->address->country:"" }}</td>
                                 <td class="center">{{count($user->businesses)?:0 }}</td>
                                 <td class="center">
-                                    <a href="#" id="verify-link-{{$user->id}}" data-url="/admin/user/verify/{{$user->id}}" onclick="verifyUser({{$user->id}})" class="verify-button">Verify</a>
+                                <td class="center">
+                                    <a href="#verify-link-{{$user->id}}" id="verify-link-{{$user->id}}" onclick="verifyUser({{$user->id}})" class="verify-button">{{$user->verified == 'yes'?'Unverify':'Verify' }}</a>
                                 </td>
                                 <td>
                                     <a href="#" id="delete-{{$user->id}}" onclick="deleteUser({{$user->id}})">Delete</a>

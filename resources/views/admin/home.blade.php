@@ -27,7 +27,7 @@ use Carbon\Carbon;
                             <ul class="col-md-12 stats">
                                 <li class="stat col-md-2 col-sm-4 col-xs-6">
                                     <span><b class="value">{{$newUserCount}}</b> </span>
-                                    <em>New Users</em>
+                                    <em>New user in last 7 days</em>
                                 </li>
                                 <li class="stat col-md-2 col-sm-4 col-xs-6">
                                     <span><b class="value">{{App\User::all()->count() }}</b> </span>
@@ -35,7 +35,7 @@ use Carbon\Carbon;
                                 </li>
                                 <li class="stat col-md-2 col-sm-4 col-xs-6">
                                     <span><b class="value">{{$newBusinessCount}}</b> </span>
-                                    <em>New Businesses</em>
+                                    <em>New businesses (last 7 days)</em>
                                 </li>
                                 <li class="stat col-md-2 col-sm-4 col-xs-6">
                                     <span><b class="value">{{$totalBusinessCount}}</b> </span>

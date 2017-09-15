@@ -57,7 +57,7 @@
                                 </td>
                                 <td class="center">{{isset($user->address)? $user->address->street_address . ' ' .$user->address->town  . ' ' . $user->address->state  . ', ' . $user->address->country:"" }}</td>
                                 <td class="center">{{count($user->businesses)?:0 }}</td>
-                                <td class="center"><a href="#" id="verify-link-{{$user->id}}" data-url="/admin/user/verify/{{$user->id}}" onclick="verifyUser({{$user->id}})"  class="verify-button">{{$user->verified?'Verify':'Unverify' }}</a></td>
+                                <td class="center"><a href="#" id="verify-link-{{$user->id}}" data-url="/admin/user/verify/{{$user->id}}" onclick="verifyUser({{$user->id}})"  class="verify-button">{{$user->verified != 'yes'?'Verify':'Unverify' }}</a></td>
                                 <td>
                                     <a href="#" id="delete-{{$user->id}}" onclick="deleteUser({{$user->id}})" data-url="/admin/deleteuser/{{$user->id}}">Delete</a>
                                 </td>

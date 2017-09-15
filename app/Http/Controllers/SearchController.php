@@ -76,7 +76,7 @@ class SearchController extends Controller
     {
         $categoryBusinesses = Business::where('category_id' , $category->id)
             ->paginate(15)
-            ->withPath('/categories/' . $category->id . '/' . Str::slug($category->name));;
+            ->withPath('/categories/' . $category->id . '/' . Str::slug($category->name));
 
         $metaSearchData['count'] = count(Business::where('category_id' , $category->id)->get());
         foreach($categoryBusinesses as $business)

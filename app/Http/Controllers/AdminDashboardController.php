@@ -26,11 +26,12 @@ class AdminDashboardController extends Controller
         $promotionsRequestCount = Promotion::where('created_at' , '>' , Carbon::today()->startOfDay())->count() ;
         $admins = UserMeta::where('role' , '=' , 'admin')->get();
         $newUserCount =
-            User::where('created_at' , '>' , Carbon::today()
-            ->startOfDay())
+            User::where('created_at' , '>' ,
+                Carbon::now()->subDays(7)->startOfDay())
             ->count() ;
         $newBusinessCount =
-            Business::where('created_at' , '>' , Carbon::now()->subDays(3)
+            Business::where('created_at' , '>' ,
+                Carbon::now()->subDays(7)
             ->startOfDay())
             ->count() ;
         $newBusinesses =
@@ -64,7 +65,11 @@ class AdminDashboardController extends Controller
             ->join('user_metas','users.id' , '=' , 'user_metas.user_id','inner')
             ->where('user_metas.role','!=', 'admin')
             ->get() ;*/
-        $newUsers = User::raw('SELECT  * FROM users INNER JOIN user_metas ON users.id = user_metas.user_id WHERE users.verified != \'yes\' AND user_metas.role != \'admin\'')->get();
+        $newUsers = User::raw('SELECT  * FROM users 
+                        INNER JOIN user_metas ON users.id = user_metas.user_id 
+                        WHERE users.verified != \'yes\' 
+                        AND user_metas.role != \'admin\'')
+                    ->get();
         return view('admin.newusers' , ['newUsers' => $newUsers ,]);
     }
 

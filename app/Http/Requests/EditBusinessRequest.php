@@ -31,7 +31,7 @@ class EditBusinessRequest extends FormRequest
      */
     public function rules()
     {
-        return ['business_name'           => 'required|string|max:200|min:8' ,
+        return [/*'business_name'           => 'required|string|max:200|min:8' ,
                 'business_street_address' => 'required|string|max:100' ,
                 'business_zip_code'       => ['required' ,
                                               'integer' ,
@@ -50,7 +50,7 @@ class EditBusinessRequest extends FormRequest
                                               'regex:@^(http\:\/\/|https\:\/\/)?([a-z0-9][a-z0-9\-]*\.)+[a-z0-9][a-z0-9\-]*$@i'] ,
                 'business_latitude'       => ['required' , 'regex:/^(\-?\d+(\.\d+)?).\s*(\-?\d+(\.\d+)?)$/'] ,
                 'business_longitude'      => ['required' , 'regex:/^(\-?\d+(\.\d+)?).\s*(\-?\d+(\.\d+)?)$/'] ,
-                'business_profile_pic'    => 'image|mimes:jpeg,jpg,png'
+                'business_profile_pic'    => 'image|mimes:jpeg,jpg,png'*/
 
         ];
     }

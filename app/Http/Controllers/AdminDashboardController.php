@@ -68,7 +68,9 @@ class AdminDashboardController extends Controller
         $newUsers = User::raw('SELECT  * FROM users 
                         INNER JOIN user_metas ON users.id = user_metas.user_id 
                         WHERE users.verified != \'yes\' 
-                        AND user_metas.role != \'admin\'')
+                        AND user_metas.role != \'admin\'
+                        ORDER BY users.id desc
+                        LIMIT 50')
                     ->get();
         return view('admin.newusers' , ['newUsers' => $newUsers ,]);
     }

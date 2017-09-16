@@ -116,6 +116,7 @@ class RegisterController extends Controller
             //'middle_name'   => $data['middlename'] ,
             //'last_name'     => $data['lastname'] ,
             'date_of_birth' => $data['dateofbirth'] ,
+            'verified'      => "pending"
 
         ]);
         $user->address()->create([

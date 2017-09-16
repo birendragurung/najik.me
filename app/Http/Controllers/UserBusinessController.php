@@ -238,6 +238,10 @@ class UserBusinessController extends Controller
                 Storage::delete($absolute_path);
                 Image::make($avatar)->save($absolute_path);
                 $oldFile->mime_type      = $avatar->getMimeType();
+                if($business->file->where('meta_name' , '=' , 'business_profile_pic')->first())
+                {
+                    $fileExtension = "";
+                }
                 $oldFile->file_url       = '/business/uploads/' . $filename . '.' . $fileExtension;
                 $oldFile->file_title     = $business->name;
                 $oldFile->file_extension = $fileExtension;

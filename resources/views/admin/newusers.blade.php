@@ -33,36 +33,40 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($newUsers as $user)
-                            <tr class="odd gradeX" id="user-{{$user->id}}">
-                                <td>{{$user->id }}</td>
-                                <td>{{$user->name}}</td>
-                                <td>{{$user->email }}</td>
-                                <td class="center"> {{$user->created_at }}</td>
-                                <td class="center">
-                                    <?php
-                                    $label = '';
-                                    if($user->verified == 'yes')
-                                    {
-                                        $label = 'label-success';
-                                    } elseif($user->verified == 'pending' )
-                                    {
-                                        $label = 'label-warning';
-                                    } elseif($user->verified = 'no' )
-                                    {
-                                        $label = 'label-default';
-                                    }
-                                    ?>
-                                    <span id="user-span-{{$user->id}}" class="label {{$label}}">{{$user->verified}}</span>
-                                </td>
-                                <td class="center">{{isset($user->address)? $user->address->street_address . ' ' .$user->address->town  . ' ' . $user->address->state  . ', ' . $user->address->country:"" }}</td>
-                                <td class="center">{{count($user->businesses)?:0 }}</td>
-                                <td class="center"><a href="#" id="verify-link-{{$user->id}}" data-url="/admin/user/verify/{{$user->id}}" onclick="verifyUser({{$user->id}})"  class="verify-button">{{$user->verified != 'yes'?'Verify':'Unverify' }}</a></td>
-                                <td>
-                                    <a href="#" id="delete-{{$user->id}}" onclick="deleteUser({{$user->id}})" data-url="/admin/deleteuser/{{$user->id}}">Delete</a>
-                                </td>
-                            </tr>
-                        @endforeach
+                        @if($newUsers->count()  > 0 )
+                            @foreach($newUsers as $user)
+                                <tr class="odd gradeX" id="user-{{$user->id}}">
+                                    <td>{{$user->id }}</td>
+                                    <td>{{$user->name}}</td>
+                                    <td>{{$user->email }}</td>
+                                    <td class="center"> {{$user->created_at }}</td>
+                                    <td class="center">
+                                        <?php
+                                        $label = '';
+                                        if($user->verified == 'yes')
+                                        {
+                                            $label = 'label-success';
+                                        } elseif($user->verified == 'pending')
+                                        {
+                                            $label = 'label-warning';
+                                        } elseif($user->verified = 'no')
+                                        {
+                                            $label = 'label-default';
+                                        }
+                                        ?>
+                                        <span id="user-span-{{$user->id}}" class="label {{$label}}">{{$user->verified}}</span>
+                                    </td>
+                                    <td class="center">{{isset($user->address)? $user->address->street_address . ' ' .$user->address->town  . ' ' . $user->address->state  . ', ' . $user->address->country:"" }}</td>
+                                    <td class="center">{{count($user->businesses)?:0 }}</td>
+                                    <td class="center">
+                                        <a href="#" id="verify-link-{{$user->id}}" data-url="/admin/user/verify/{{$user->id}}" onclick="verifyUser({{$user->id}})" class="verify-button">{{$user->verified != 'yes'?'Verify':'Unverify' }}</a>
+                                    </td>
+                                    <td>
+                                        <a href="#" id="delete-{{$user->id}}" onclick="deleteUser({{$user->id}})" data-url="/admin/deleteuser/{{$user->id}}">Delete</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
                         </tbody>
                     </table>
                 </div>

@@ -182,7 +182,7 @@ class SearchController extends Controller
 
     protected function nearbyBusinesses($latitude = -62.8652 , $longitude = 44.5256 , $distance = 30)
     {
-        $nearbyAddresses  = Address::select(DB::raw('*, ( 3959 * acos( cos( radians(' . $latitude . ') ) * cos( radians( latitude ) ) * cos( radians(longitude ) - radians(' . $longitude . ') ) + sin( radians(' . $latitude . ') ) * sin( radians( latitude ) ) ) ) AS distance'))
+        $nearbyAddresses  = Address::select(DB::raw('*, ( 6371 * acos( cos( radians(' . $latitude . ') ) * cos( radians( latitude ) ) * cos( radians(longitude ) - radians(' . $longitude . ') ) + sin( radians(' . $latitude . ') ) * sin( radians( latitude ) ) ) ) AS distance'))
             ->where('entity_type' , Business::class)
             ->having('distance' , '<' , $distance)
             ->orderBy('distance')
